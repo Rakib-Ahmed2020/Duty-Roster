@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Duty Roster - Linemen Team</title>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header class="app-header">
+        <h1>Linemen Duty Roster</h1>
+        <p>Your daily guide to who's on duty and who's resting.</p>
+    </header>
+
+    <main class="main-content-wrapper">
+        <!-- Section 1: Employee Profiles -->
+        <section id="employee-profiles-section" class="card-section">
+            <h2>Our Linemen Team</h2>
+            <div id="employee-profiles-grid" class="employee-grid">
+                <!-- Employee cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Section 2: Calendar and Holiday Info -->
+        <section id="calendar-section" class="card-section">
+            <h2>Duty Calendar</h2>
+            <div id="calendar-controls">
+                <button id="prevMonth">Prev</button>
+                <h3 id="currentMonthYear"></h3>
+                <button id="nextMonth">Next</button>
+            </div>
+            <div id="calendar-grid" class="calendar-grid">
+                <!-- Day names and dates will be rendered here by JavaScript -->
+            </div>
+            <div id="holiday-description-box" class="info-box">
+                <h4>Selected Date Info: <span id="selectedDateDisplay"></span></h4>
+                <p id="holiday-info">Click on a date to see details.</p>
+            </div>
+        </section>
+
+        <!-- Section 3: Resting Employees -->
+        <section id="resting-employees-section" class="card-section">
+            <h2>Who's Resting Today?</h2>
+            <div id="resting-employees-grid" class="employee-grid">
+                <p class="no-resting-message">Select a date on the calendar to see who's resting.</p>
+                <!-- Resting employee cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <section class="info-panel">
+    <h2>Who's Working Today?</h2>
+    <div id="working-employees-grid" class="employee-grid">
+        <p class="no-working-message">All linemen are resting today.</p>
+    </div>
+     </section>
+
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 Rakib Ahmed. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script> <!-- Link to your JavaScript file -->
+</body>
+</html>
