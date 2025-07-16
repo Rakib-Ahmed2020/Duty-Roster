@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (holidays[date]) {
             holidayDescription = `Public Holiday: ${holidays[date]}`;
         } else if (dayOfWeek === 5 || dayOfWeek === 6) {
-            holidayDescription = 'National Holiday (Weekend)';
+            holidayDescription = 'Weekend';
         } else {
             holidayDescription = 'No public holiday on this date.';
         }
