@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Employee Data (Your 7 Linemen)
     const employees = [
-        { id: 'lineman1', name: 'Md. Habibur Rahman', designation: 'Senior Lineman', photo: 'https://placehold.co/150x150/ADD8E6/000000?text=Habib' },
-        { id: 'lineman2', name: 'Ariful Islam', designation: 'Lineman', photo: 'https://placehold.co/150x150/FFB6C1/000000?text=Ariful' },
+        { id: 'lineman1', name: 'Md. Habibur Rahman', designation: 'Senior Lineman', photo: './20250716_195749.jpg' },
+        { id: 'lineman2', name: 'Ariful Islam', designation: 'Lineman', photo: './IMG-20250716-WA0002.jpg' },
         { id: 'lineman3', name: 'Md. Iqram Hossain', designation: 'Lineman', photo: './1000078061.jpg' },
         { id: 'lineman4', name: 'Md. Khairul Islam', designation: 'Lineman', photo: './1000078055.jpg' },
         { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Junior Lineman', photo: './1000078060.jpg' },
         { id: 'lineman6', name: 'Md. Samsul Haque', designation: 'Junior Lineman', photo: './1000078056.jpg' },
-        { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'Junior Lineman', photo: 'https://placehold.co/150x150/F08080/000000?text=Rafiq' },
+        { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'Junior Lineman', photo: './IMG-20250717-WA0002.jpg' },
     ];
 
     // Bangladeshi Public Holidays for 2025 (based on common lists, verify with official government gazette)
