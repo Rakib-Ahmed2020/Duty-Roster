@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office Duty Roster - Linemen Team</title>
-    <!-- Google Font: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
-    <style>
+    <link rel="stylesheet" href="style.css"> <style>
    /* @keyframes marquee-animation {
         0% { transform: translateX(0%); }
         100% { transform: translateX(-100%); }
@@ -22,20 +20,17 @@
 </head>
 <body>
     <header class="app-header">
-        <h1>Linemen Duty Roster</h1>
-        <p>Your daily guide to who's on duty and who's resting.</p>
+        <h1 id="headline">Linemen Duty Roster</h1>
+        <p id="head">Shamganj Sub-Zonal Office, NPBS</p>
     </header>
 
     <main class="main-content-wrapper">
-        <!-- Section 1: Employee Profiles -->
         <section id="employee-profiles-section" class="card-section">
             <h2>Our Linemen Team</h2>
             <div id="employee-profiles-grid" class="employee-grid">
-                <!-- Employee cards will be dynamically inserted here by JavaScript -->
-            </div>
+                </div>
         </section>
 
-        <!-- Section 2: Calendar and Holiday Info -->
         <section id="calendar-section" class="card-section">
             <h2>Duty Calendar</h2>
             <div id="calendar-controls">
@@ -44,30 +39,42 @@
                 <button id="nextMonth">Next</button>
             </div>
             <div id="calendar-grid" class="calendar-grid">
-                <!-- Day names and dates will be rendered here by JavaScript -->
-            </div>
+                </div>
             <div id="holiday-description-box" class="info-box">
                 <h4>Selected Date Info: <span id="selectedDateDisplay"></span></h4>
                 <p id="holiday-info">Click on a date to see details.</p>
             </div>
         </section>
 
-        <!-- Section 3: Resting Employees -->
         <section id="resting-employees-section" class="card-section">
             <h2>Who's Resting Today?</h2>
             <div id="resting-employees-grid" class="employee-grid">
                 <p class="no-resting-message">No employee is resting today.</p>
-                <!-- Resting employee cards will be dynamically inserted here by JavaScript -->
+                </div>
+        </section>
+
+        <section class="info-panel card-section">
+            <h2>Who's Working Today?</h2>
+            <div id="working-employees-grid" class="employee-grid">
+                <p class="no-working-message">All linemen are resting today.</p>
+            </div>
+        </section>
+        <section id="extra-emergency-section" class="card-section">
+            <h2>Extra Emergency Group (Friday Only)</h2>
+            <div id="extra-emergency-grid" class="employee-grid">
+                <p class="no-extra-emergency-message">No one assigned to the Extra Emergency Group today.</p>
             </div>
         </section>
 
-        <section class="info-panel">
-    <h2>Who's Working Today?</h2>
-    <div id="working-employees-grid" class="employee-grid">
-        <p class="no-working-message">All linemen are resting today.</p>
-    </div>
-     </section>
-    </main>
+        <section class="card-section">
+            <h2>Night Shift Duty</h2>
+            <div id="night-shift-employees-grid" class="employee-grid">
+                <p class="no-night-shift-message">No one is assigned for night shift today.</p>
+                </div>
+        </section>
+
+     
+        </main>
 
    <marquee behavior="scroll" direction="left" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #333; color: #fff; padding: 10px 0; font-family: 'Arial', sans-serif; font-size: 18px; white-space: nowrap; overflow: hidden; box-shadow: 0 -2px 5px rgba(0,0,0,0.2); animation: marquee-animation 3s linear infinite;">
     <span style="display: inline-block; padding-left: 100%;">
@@ -81,6 +88,5 @@
         <p>&copy; 2025 Rakib Ahmed. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script> <!-- Link to your JavaScript file -->
-</body>
+    <script src="script.js"></script> </body>
 </html>
