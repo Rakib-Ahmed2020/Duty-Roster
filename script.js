@@ -1,13 +1,14 @@
-// resting and working
 // --- DOM Elements ---
-const employeeProfilesGrid = document.getElementById('employee-profiles-grid');
-const calendarGrid = document.getElementById('calendar-grid');
-// ... (other existing elements) ...
-const restingEmployeesGrid = document.getElementById('resting-employees-grid');
-const noRestingMessage = restingEmployeesGrid.querySelector('.no-resting-message');
-// ADD THESE TWO NEW LINES:
-const workingEmployeesGrid = document.getElementById('working-employees-grid');
-const noWorkingMessage = workingEmployeesGrid.querySelector('.no-working-message');
+// (These are already defined inside DOMContentLoaded, keeping the outer ones for initial clarity if needed)
+// const employeeProfilesGrid = document.getElementById('employee-profiles-grid');
+// const calendarGrid = document.getElementById('calendar-grid');
+// const restingEmployeesGrid = document.getElementById('resting-employees-grid');
+// const noRestingMessage = restingEmployeesGrid.querySelector('.no-resting-message');
+// const workingEmployeesGrid = document.getElementById('working-employees-grid');
+// const noWorkingMessage = workingEmployeesGrid.querySelector('.no-working-message');
+// const nightShiftEmployeesGrid = document.getElementById('night-shift-employees-grid'); // NEW
+// const noNightShiftMessage = nightShiftEmployeesGrid.querySelector('.no-night-shift-message'); // NEW
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
@@ -20,6 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const holidayInfoElem = document.getElementById('holiday-info');
     const restingEmployeesGrid = document.getElementById('resting-employees-grid');
     const noRestingMessage = restingEmployeesGrid.querySelector('.no-resting-message');
+    const workingEmployeesGrid = document.getElementById('working-employees-grid');
+    const noWorkingMessage = workingEmployeesGrid.querySelector('.no-working-message');
+    const nightShiftEmployeesGrid = document.getElementById('night-shift-employees-grid'); // NEW
+    const noNightShiftMessage = nightShiftEmployeesGrid.querySelector('.no-night-shift-message'); // NEW
+    // NEW: Extra Emergency Group DOM elements
+    const extraEmergencySection = document.getElementById('extra-emergency-section');
+    const extraEmergencyGrid = document.getElementById('extra-emergency-grid');
+    const noExtraEmergencyMessage = extraEmergencyGrid.querySelector('.no-extra-emergency-message');
+
 
     // --- State Variables ---
     let currentDate = new Date();
@@ -30,14 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Employee Data (Your 7 Linemen)
     const employees = [
-        { id: 'lineman1', name: 'Md. Habibur Rahman', designation: 'Senior Lineman', photo: './20250716_195749.jpg' },
-        { id: 'lineman2', name: 'Ariful Islam', designation: 'Lineman', photo: './IMG-20250716-WA0002.jpg' },
-        { id: 'lineman3', name: 'Md. Iqram Hossain', designation: 'Lineman', photo: './1000078061.jpg' },
-        { id: 'lineman4', name: 'Md. Khairul Islam', designation: 'Lineman', photo: './1000078055.jpg' },
-        { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Junior Lineman', photo: './1000078060.jpg' },
-        { id: 'lineman6', name: 'Md. Samsul Haque', designation: 'Junior Lineman', photo: './1000078056.jpg' },
-        { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'Junior Lineman', photo: './IMG-20250717-WA0002.jpg' },
+        { id: 'lineman1', name: 'Md. Habibur Rahman', designation: 'Lineman Grade-1', photo: './20250716_195749.jpg', shortName: 'Habib' },
+        { id: 'lineman2', name: 'Ariful Islam', designation: 'Lineman Grade-1', photo: './IMG-20250716-WA0002.jpg', shortName: 'Arif' },
+        { id: 'lineman3', name: 'Md. Iqram Hossain', designation: 'Lineman Grade-2', photo: './1000078061.jpg', shortName: 'Iqram' },
+        { id: 'lineman4', name: 'Md. Khairul Islam', designation: 'Lineman Grade-2 ', photo: './1000078055.jpg', shortName: 'Khairul' },
+        { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './1000078060.jpg', shortName: 'Rakib' },
+        { id: 'lineman6', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu' },
+        { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './IMG-20250717-WA0002.jpg', shortName: 'Rafiq' },
     ];
+
+    // Helper to get employee ID by short name
+    function getEmployeeIdByShortName(shortName) {
+        const employee = employees.find(emp => emp.shortName === shortName);
+        return employee ? employee.id : null;
+    }
 
     // Bangladeshi Public Holidays for 2025 (based on common lists, verify with official government gazette)
     // IMPORTANT: Islamic holidays (marked with *) are approximate and depend on moon sighting.
@@ -119,10 +135,67 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // --- Dynamic Rest Day Routine Generation ---
-    // This function will automatically generate the 'restDayRoutine' object
-    // based on your specified 4-week rotating schedule.
-    function generateRotatingRestDayRoutine(employeesList, patterns, rotationStartDateStr, numMonthsToGenerate = 12) {
+    // NEW: Night Shift Rotation Patterns
+    // The values are short names, we'll convert them to IDs in the generation function
+    const nightShiftPatterns = [
+        // Week 1
+        {
+            6: ['Arif', 'Khairul'],   // Saturday
+            0: ['Rakib', 'Samsu'],    // Sunday
+            1: ['Samsu', 'Arif'],     // Monday
+            2: ['Habib', 'Rafiq'],    // Tuesday
+            3: ['Iqram', 'Arif'],     // Wednesday
+            4: ['Khairul', 'Rakib'],  // Thursday
+            5: ['Habib', 'Iqram']     // Friday
+        },
+        // Week 2
+        {
+            6: ['Habib', 'Rafiq'],    // Saturday
+            0: ['Iqram', 'Khairul'],  // Sunday
+            1: ['Samsu', 'Habib'],    // Monday
+            2: ['Rafiq', 'Iqram'],    // Tuesday
+            3: ['Rakib', 'Rafiq'],    // Wednesday
+            4: ['Khairul', 'Arif'],   // Thursday
+            5: ['Rakib', 'Arif']      // Friday
+        },
+        // Week 3
+        {
+            6: ['Habib', 'Khairul'],  // Saturday
+            0: ['Rafiq', 'Khairul'],  // Sunday
+            1: ['Arif', 'Samsu'],     // Monday
+            2: ['Iqram', 'Samsu'],    // Tuesday
+            3: ['Habib', 'Rakib'],    // Wednesday
+            4: ['Arif', 'Rafiq'],     // Thursday
+            5: ['Iqram', 'Rakib']     // Friday
+        },
+        // Week 4
+        {
+            6: ['Habib', 'Samsu'],    // Saturday
+            0: ['Arif', 'Iqram'],     // Sunday
+            1: ['Arif', 'Rakib'],     // Monday
+            2: ['Iqram', 'Rafiq'],    // Tuesday
+            3: ['Rakib', 'Iqram'],    // Wednesday
+            4: ['Samsu', 'Khairul'],  // Thursday
+            5: ['Rafiq', 'Khairul']   // Friday
+        }
+    ];
+
+    // NEW: Extra Emergency Group Rotation Patterns (only for Friday - day 5)
+    const extraEmergencyPatterns = [
+        // Week 1 Friday: Habibur, Iqram Hossain
+        { 5: ['Habib', 'Iqram'] },
+        // Week 2 Friday: Ariful, Khairul, Rakib Ahmed
+        { 5: ['Arif', 'Khairul', 'Rakib'] },
+        // Week 3 Friday: Habibur, Iqram, Rakib Ahmed
+        { 5: ['Habib', 'Iqram', 'Rakib'] },
+        // Week 4 Friday: Ariful, Khairul
+        { 5: ['Arif', 'Khairul'] }
+    ];
+
+
+    // --- Dynamic Routine Generation (for both rest days and night shifts) ---
+    // This function will automatically generate the routine objects
+    function generateRotatingRoutine(employeesList, patterns, rotationStartDateStr, numMonthsToGenerate = 12, isShortNameConversionNeeded = false) {
         const routine = {};
         const rotationStartDate = new Date(rotationStartDateStr); // e.g., '2025-07-19' (Saturday)
 
@@ -134,10 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Find the first Saturday that is on or after the rotationStartDate.
         // This acts as the definitive start of "Week 1" for the rotation cycle.
         let firstCycleSaturday = new Date(rotationStartDate);
+        firstCycleSaturday.setHours(0, 0, 0, 0); // Normalize time for accurate comparisons
+        // Ensure firstCycleSaturday is actually a Saturday
         while (firstCycleSaturday.getDay() !== 6) { // 6 is Saturday
             firstCycleSaturday.setDate(firstCycleSaturday.getDate() + 1);
         }
-        firstCycleSaturday.setHours(0, 0, 0, 0); // Normalize time for accurate comparisons
 
         let currentDay = new Date(startGenDate);
         currentDay.setHours(0, 0, 0, 0); // Normalize time for accurate comparisons
@@ -157,11 +231,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const overallWeekNumber = Math.floor(daysSinceCycleStart / 7);
                 const patternIndex = overallWeekNumber % patterns.length; // This will cycle through 0, 1, 2, 3
 
-                // Get the resting employees for this day of the week in the current pattern
-                const employeesRestingTodayIds = patterns[patternIndex][dayOfWeek] || [];
+                // Get the employees for this day of the week in the current pattern
+                let employeeNamesOrIds = patterns[patternIndex][dayOfWeek] || [];
 
-                if (employeesRestingTodayIds.length > 0) {
-                    routine[fullDate] = employeesRestingTodayIds;
+                if (employeeNamesOrIds.length > 0) {
+                    // Convert short names to full IDs if 'isShortNameConversionNeeded' is true
+                    const employeeIds = isShortNameConversionNeeded ? employeeNamesOrIds.map(getEmployeeIdByShortName).filter(id => id !== null) : employeeNamesOrIds;
+                    if (employeeIds.length > 0) {
+                         routine[fullDate] = employeeIds;
+                    }
                 }
             }
 
@@ -170,8 +248,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return routine;
     }
 
-    // Generate the routine. '2025-07-19' is a Saturday, chosen as the start of "Week 1" for your rotation.
-    const restDayRoutine = generateRotatingRestDayRoutine(employees, rotationPatterns, '2025-07-19', 12);
+    // Generate the rest day routine. '2025-07-19' is a Saturday, chosen as the start of "Week 1" for your rotation.
+    const restDayRoutine = generateRotatingRoutine(employees, rotationPatterns, '2025-07-19', 12, false);
+
+    // Generate the night shift routine using the same logic but different patterns
+    // '2025-07-19' is a Saturday, chosen as the start of "Week 1" for your rotation.
+    const nightShiftRoutine = generateRotatingRoutine(employees, nightShiftPatterns, '2025-07-19', 12, true);
+
+    // NEW: Generate the Extra Emergency Group routine
+    // '2025-07-19' is a Saturday, chosen as the start of "Week 1" for your rotation.
+    const extraEmergencyRoutine = generateRotatingRoutine(employees, extraEmergencyPatterns, '2025-07-19', 12, true);
 
 
     // --- Functions ---
@@ -180,26 +266,22 @@ document.addEventListener('DOMContentLoaded', () => {
      * Renders employee cards into a specified grid container.
      * @param {HTMLElement} container - The DOM element to append cards to.
      * @param {Array<Object>} employeeList - An array of employee objects to display.
+     * @param {HTMLElement} noMessageElement - The specific 'no message' element for this grid. Can be null.
      */
-    function renderEmployeeCards(container, employeeList) {
+    function renderEmployeeCards(container, employeeList, noMessageElement) {
         container.innerHTML = ''; // Clear previous cards
-        // Re-append the no-resting-message if it exists, before potentially hiding it
-        if (container.id === 'resting-employees-grid' && noRestingMessage) {
-        noRestingMessage.style.display = 'none'; // Hide by default when rendering resting employees
-    } else if (container.id === 'working-employees-grid' && noWorkingMessage) {
-        noWorkingMessage.style.display = 'none'; // Hide by default when rendering working employees
-    }
 
- if (employeeList.length === 0) {
-        if (container.id === 'resting-employees-grid' && noRestingMessage) {
-            noRestingMessage.style.display = 'block'; // Show if no resting employees
-            container.appendChild(noRestingMessage);
-        } else if (container.id === 'working-employees-grid' && noWorkingMessage) {
-            noWorkingMessage.style.display = 'block'; // Show if no working employees
-            container.appendChild(noWorkingMessage);
+        if (employeeList.length === 0) {
+            if (noMessageElement) {
+                noMessageElement.style.display = 'block'; // Show if no employees
+                container.appendChild(noMessageElement);
+            }
+            return; // Exit if no employees to render
+        } else {
+            if (noMessageElement) {
+                noMessageElement.style.display = 'none'; // Hide if employees are present
+            }
         }
-        return; // Exit if no employees to render
-    }
 
         employeeList.forEach(employee => {
             const card = document.createElement('div');
@@ -210,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.alt = employee.name;
             img.onerror = function() { // Fallback for broken images
                 this.onerror = null; // Prevent infinite loops
-                this.src = `https://placehold.co/150x150/CCCCCC/333333?text=${employee.name.split(' ')[0]}`;
+                this.src = `https://placehold.co/150x150/CCCCCC/333333?text=${employee.shortName || employee.name.split(' ')[0]}`; // Use shortName for fallback text
             };
 
             const name = document.createElement('h3');
@@ -279,17 +361,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 dayDiv.classList.add('today');
             }
 
-            // 2. Treat all Fridays and Saturdays as national holidays
-           // 2. Treat all Fridays and Saturdays as national holidays with a distinct color
-            if (dayOfWeek === 5 || dayOfWeek === 6) { // Friday (5) or Saturday (6)
-                dayDiv.classList.add('holiday'); // Mark as a general holiday
-                dayDiv.classList.add('weekend-holiday'); // Mark specifically as a weekend holiday
+            // 2. Treat all Fridays and Saturdays as weekend holidays (Bangladesh context)
+            if (dayOfWeek === 5) { // Friday (5)
+                dayDiv.classList.add('friday');
+            }
+            if (dayOfWeek === 6) { // Saturday (6)
+                dayDiv.classList.add('saturday');
             }
 
-            // 3. Apply holiday class for declared specific holidays (if not already a weekend holiday)
-            if (holidays[fullDate] && !(dayOfWeek === 5 || dayOfWeek === 6)) {
+            // 3. Apply holiday class for declared specific holidays
+            if (holidays[fullDate]) {
                 dayDiv.classList.add('holiday');
             }
+
 
             // Add click event listener to each day
             dayDiv.addEventListener('click', () => {
@@ -330,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Displays holiday information and resting employees for a given date.
+     * Displays holiday information, resting employees, working employees, and night shift employees for a given date.
      * @param {string} date - The date in YYYY-MM-DD format.
      */
     function displayDateInfo(date) {
@@ -339,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Holiday Info ---
         const holidayName = holidays[date];
         const dateObj = new Date(date);
-        const dayOfWeek = dateObj.getDay();
+        const dayOfWeek = dateObj.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
 
         let holidayDescription = '';
         if (holidays[date]) {
@@ -357,12 +441,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Resting Employees Info ---
         const restingEmployeeIds = restDayRoutine[date] || [];
         const restingEmployees = employees.filter(emp => restingEmployeeIds.includes(emp.id));
+        renderEmployeeCards(restingEmployeesGrid, restingEmployees, noRestingMessage);
 
-        renderEmployeeCards(restingEmployeesGrid, restingEmployees);
+        // --- Night Shift Employees Info ---
+        const nightShiftEmployeeIds = nightShiftRoutine[date] || [];
+        const nightShiftEmployees = employees.filter(emp => nightShiftEmployeeIds.includes(emp.id));
+        renderEmployeeCards(nightShiftEmployeesGrid, nightShiftEmployees, noNightShiftMessage);
+
+        // NEW: --- Extra Emergency Group Info (Friday Only) ---
+        const extraEmergencyEmployeeIds = extraEmergencyRoutine[date] || [];
+        const extraEmergencyEmployees = employees.filter(emp => extraEmergencyEmployeeIds.includes(emp.id));
+
+        if (dayOfWeek === 5) { // If it's Friday
+            extraEmergencySection.style.display = 'block'; // Show the section
+            renderEmployeeCards(extraEmergencyGrid, extraEmergencyEmployees, noExtraEmergencyMessage);
+        } else {
+            extraEmergencySection.style.display = 'none'; // Hide the section on other days
+            extraEmergencyGrid.innerHTML = ''; // Clear content when hidden
+            extraEmergencyGrid.appendChild(noExtraEmergencyMessage); // Add back the message for consistency
+        }
+
         // --- Working Employees Info ---
-    const workingEmployees = employees.filter(emp => !restingEmployeeIds.includes(emp.id));
-
-    renderEmployeeCards(workingEmployeesGrid, workingEmployees);
+        // Filter out resting employees AND (if it's Friday) extra emergency employees
+        const workingEmployees = employees.filter(emp =>
+            !restingEmployeeIds.includes(emp.id) &&
+            !(dayOfWeek === 5 && extraEmergencyEmployeeIds.includes(emp.id)) // Exclude emergency group on Fridays
+        );
+        renderEmployeeCards(workingEmployeesGrid, workingEmployees, noWorkingMessage);
     }
 
     // --- Event Listeners ---
@@ -389,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initial Render ---
     // Render all employee profiles initially in the "Our Linemen Team" section
-    renderEmployeeCards(employeeProfilesGrid, employees);
+    renderEmployeeCards(employeeProfilesGrid, employees, null); // No "no message" for the main profile grid
 
     // Initial render of the calendar and display info for today
     renderCalendar();
