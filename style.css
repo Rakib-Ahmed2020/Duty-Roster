@@ -25,6 +25,8 @@
 }
 
 body {
+    background-image: url("./body.jpg");
+    background-size: contain;
     font-family: 'Inter', sans-serif;
     background-color: var(--light-gray);
     color: var(--dark-gray);
@@ -36,13 +38,21 @@ body {
 
 /* Header & Footer */
 .app-header, .app-footer {
+    background-image: url("./head.jpg");
+    background-size: contain;
     background-color: var(--dark-gray);
-    color: white;
+    color: navy;
     text-align: center;
     padding: 1.2em 0;
     width: 100%;
 }
-
+#headline{
+    color: black;
+}
+#head{
+    font-weight: bold;
+    background-color: white;
+}
 .app-header h1 {
     margin-bottom: 0.2em;
     font-size: 2em;
@@ -153,7 +163,7 @@ body {
     cursor: pointer;
     font-size: 1em;
     font-weight: 600;
-    transition: background-color 0.25s ease, transform 0.1s ease;
+    transition: background-color 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
 }
 
@@ -242,7 +252,6 @@ body {
     background-color: #c3e6cb;
 }
 
-/* Selected Day */
 /* Selected Day */
 .selected-day {
     background-color: var(--selected-day-bg); /* Primary blue for selected day */
@@ -394,6 +403,34 @@ body {
     padding: 20px;
 }
 
+/* Working Employees Section */
+.no-working-message {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Night Shift Section */
+.no-night-shift-message {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* NEW: Extra Emergency Group Section */
+#extra-emergency-section {
+    display: none; /* Hidden by default, JavaScript will show on Fridays */
+}
+
+.no-extra-emergency-message {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+}
+
 /* Responsive Adjustments */
 /* For tablets and larger screens */
 @media (min-width: 768px) {
@@ -415,8 +452,13 @@ body {
         min-width: 450px; /* Minimum width for calendar readability */
     }
 
-    #resting-employees-section {
+    /* Adjust resting, working, and night shift sections to take full width or arrange as needed */
+    #resting-employees-section,
+    .info-panel, /* This is "Who's Working Today?" */
+    .card-section:nth-last-of-type(2), /* This targets the Night Shift section */
+    #extra-emergency-section { /* This targets the new Extra Emergency section */
         flex: 1 1 100%; /* Takes full width below calendar and profiles */
+        margin-top: 25px; /* Add some space above if it wraps */
     }
 
     .employee-grid {
@@ -436,8 +478,11 @@ body {
         min-width: 500px;
     }
 
-    #resting-employees-section {
-        flex: 1 1 100%; /* Still full width below */
+    #resting-employees-section,
+    .info-panel,
+    .card-section:nth-last-of-type(2),
+    #extra-emergency-section { /* Still full width below */
+        flex: 1 1 100%;
     }
 
     .employee-grid {
