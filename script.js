@@ -499,3 +499,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial render of the calendar and display info for today
     renderCalendar();
 });
+
+// ... (existing script.js content) ...
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- New Modal Elements ---
+    const photoModal = document.getElementById('photoModal');
+    const skipButton = document.getElementById('skipButton');
+
+    // --- Modal Logic ---
+    let modalTimer; // To store the timeout ID
+
+    function showModal() {
+        photoModal.style.display = 'flex'; // Show the modal using flex for centering
+        // Set a timer to close the modal after 5 seconds (5000 milliseconds)
+        modalTimer = setTimeout(hideModal, 5000);
+    }
+
+    function hideModal() {
+        photoModal.style.display = 'none'; // Hide the modal
+        clearTimeout(modalTimer); // Clear the timeout if it was still active
+    }
+
+    // Event listener for the skip button
+    skipButton.addEventListener('click', hideModal);
+
+    // Show the modal when the page loads
+    showModal();
+
+    // --- DOM Elements ---
+    // (Existing elements)
+    const employeeProfilesGrid = document.getElementById('employee-profiles-grid');
+    const calendarGrid = document.getElementById('calendar-grid');
+    // ... (rest of your existing DOM elements and code) ...
+});
