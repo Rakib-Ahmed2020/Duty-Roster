@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Employee Data (Your 7 Linemen)
     const employees = [
         { id: 'lineman1', name: 'Md. Habibur Rahman', designation: 'Lineman Grade-1', photo: './20250716_195749.jpg', shortName: 'Habib' },
-        { id: 'lineman2', name: 'Ariful Islam', designation: 'Lineman Grade-1', photo: './IMG-20250716-WA0002.jpg', shortName: 'Arif' },
+        { id: 'lineman2', name: 'Shahinur Rahman', designation: 'Lineman Grade-1', photo: './shahinur.jpg', shortName: 'Shahinur' },
         { id: 'lineman3', name: 'Md. Iqram Hossain', designation: 'Lineman Grade-2', photo: './1000078061.jpg', shortName: 'Iqram' },
         { id: 'lineman4', name: 'Md. Khairul Islam', designation: 'Lineman Grade-2 ', photo: './1000078055.jpg', shortName: 'Khairul' },
         { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './1000078060.jpg', shortName: 'Rakib' },
@@ -140,11 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const nightShiftPatterns = [
         // Week 1
         {
-            6: ['Arif', 'Khairul'],   // Saturday
+            6: ['Shahinur', 'Khairul'],   // Saturday
             0: ['Rakib', 'Samsu'],    // Sunday
-            1: ['Samsu', 'Arif'],     // Monday
+            1: ['Samsu', 'Shahinur'],     // Monday
             2: ['Habib', 'Rafiq'],    // Tuesday
-            3: ['Iqram', 'Arif'],     // Wednesday
+            3: ['Iqram', 'Shahinur'],     // Wednesday
             4: ['Khairul', 'Rakib'],  // Thursday
             5: ['Habib', 'Iqram']     // Friday
         },
@@ -153,26 +153,26 @@ document.addEventListener('DOMContentLoaded', () => {
             6: ['Habib', 'Rafiq'],    // Saturday
             0: ['Iqram', 'Khairul'],  // Sunday
             1: ['Samsu', 'Habib'],    // Monday
-            2: ['Khairul', 'Arif'],    // Tuesday
+            2: ['Khairul', 'Shahinur'],    // Tuesday
             3: ['Rakib', 'Rafiq'],    // Wednesday
             4: ['Rafiq', 'Iqram'],   // Thursday
-            5: ['Rakib', 'Arif']      // Friday
+            5: ['Rakib', 'Shahinur']      // Friday
         },
         // Week 3
         {
             6: ['Habib', 'Khairul'],  // Saturday
             0: ['Rafiq', 'Khairul'],  // Sunday
-            1: ['Arif', 'Samsu'],     // Monday
+            1: ['Shahinur', 'Samsu'],     // Monday
             2: ['Iqram', 'Samsu'],    // Tuesday
             3: ['Habib', 'Rakib'],    // Wednesday
-            4: ['Arif', 'Rafiq'],     // Thursday
+            4: ['Shahinur', 'Rafiq'],     // Thursday
             5: ['Iqram', 'Rakib']     // Friday
         },
         // Week 4
         {
             6: ['Habib', 'Samsu'],    // Saturday
-            0: ['Arif', 'Iqram'],     // Sunday
-            1: ['Arif', 'Rakib'],     // Monday
+            0: ['Shahinur', 'Iqram'],     // Sunday
+            1: ['Shahinur', 'Rakib'],     // Monday
             2: ['Iqram', 'Rafiq'],    // Tuesday
             3: ['Rakib', 'Iqram'],    // Wednesday
             4: ['Samsu', 'Khairul'],  // Thursday
@@ -185,11 +185,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Week 1 Friday: Habibur, Iqram Hossain
         { 5: ['Habib', 'Iqram'] },
         // Week 2 Friday: Ariful, Khairul, Rakib Ahmed
-        { 5: ['Arif', 'Khairul', 'Rakib'] },
+        { 5: ['Shahinur', 'Khairul', 'Rakib'] },
         // Week 3 Friday: Habibur, Iqram, Rakib Ahmed
         { 5: ['Habib', 'Iqram', 'Rakib'] },
         // Week 4 Friday: Ariful, Khairul
-        { 5: ['Arif', 'Khairul'] }
+        { 5: ['Shahinur', 'Khairul'] }
     ];
 
 
