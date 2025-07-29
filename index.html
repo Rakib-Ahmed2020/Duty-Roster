@@ -5,18 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office Duty Roster - Linemen Team</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <style>
-   /* @keyframes marquee-animation {
-        0% { transform: translateX(0%); }
-        100% { transform: translateX(-100%); }
-    }*/
-
-    /* For demonstration purposes, adding some body height to show the fixed footer */
-    body {
-        margin-bottom: 70px; /* Adjust based on marquee height */
-        min-height: 100vh;
-    }
-</style>
+    <!-- Load Tailwind CSS for utility classes (if you want to use it in the future, currently custom CSS is used) -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* For demonstration purposes, adding some body height to show the fixed footer */
+        body {
+            margin-bottom: 70px; /* Adjust based on marquee height */
+            min-height: 100vh;
+        }
+    </style>
 </head>
 <body>
     <header class="app-header">
@@ -28,7 +26,8 @@
         <section id="employee-profiles-section" class="card-section">
             <h2>Our Linemen Team</h2>
             <div id="employee-profiles-grid" class="employee-grid">
-                </div>
+                <!-- Employee cards will be rendered here by JavaScript -->
+            </div>
         </section>
 
         <section id="calendar-section" class="card-section">
@@ -39,7 +38,8 @@
                 <button id="nextMonth">Next</button>
             </div>
             <div id="calendar-grid" class="calendar-grid">
-                </div>
+                <!-- Calendar days will be rendered here by JavaScript -->
+            </div>
             <div id="holiday-description-box" class="info-box">
                 <h4>Selected Date Info: <span id="selectedDateDisplay"></span></h4>
                 <p id="holiday-info">Click on a date to see details.</p>
@@ -50,7 +50,7 @@
             <h2>Who's Resting Today?</h2>
             <div id="resting-employees-grid" class="employee-grid">
                 <p class="no-resting-message">No employee is resting today.</p>
-                </div>
+            </div>
         </section>
 
         <section class="info-panel card-section">
@@ -70,23 +70,35 @@
             <h2>Night Shift Duty</h2>
             <div id="night-shift-employees-grid" class="employee-grid">
                 <p class="no-night-shift-message">No one is assigned for night shift today.</p>
-                </div>
+            </div>
         </section>
+    </main>
 
-     
-        </main>
-
-   <marquee behavior="scroll" direction="left" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #333; color: #fff; padding: 10px 0; font-family: 'Arial', sans-serif; font-size: 18px; white-space: nowrap; overflow: hidden; box-shadow: 0 -2px 5px rgba(0,0,0,0.2); animation: marquee-animation 3s linear infinite;">
-    <span style="display: inline-block; padding-left: 100%;">
-                  বিঃদ্রঃ জরুরী মুহূর্ত যেমন বৈরী আবহাওয়া, প্রাকৃতিক দুর্যোগ কিংবা বিশেষ প্রয়োজনে সবার কর্মস্থলে উপস্থিতি এবং ডিউটি বাধ্যতামূলক। তবে বরাদ্ধকৃত ছুটি পরবর্তী কার্যদিবসে ভোগ করতে পারবেন। অবশ্যই নিজের নিরাপত্তা বজায় রেখে কার্য সম্পাদন করুন এবং যথা সময়ে নামাজ আদায় করুন। ধন্যবাদ।  👨‍🔧  🪓  🔨  ⛏  ⚒  🛠  🔧  ⛑
-
-    </span>
-</marquee>
-
+    <!-- CSS Marquee Replacement -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span>
+                বিঃদ্রঃ জরুরী মুহূর্ত যেমন বৈরী আবহাওয়া, প্রাকৃতিক দুর্যোগ কিংবা বিশেষ প্রয়োজনে সবার কর্মস্থলে উপস্থিতি এবং ডিউটি বাধ্যতামূলক। তবে বরাদ্ধকৃত ছুটি পরবর্তী কার্যদিবসে ভোগ করতে পারবেন। অবশ্যই নিজের নিরাপত্তা বজায় রেখে কার্য সম্পাদন করুন এবং যথা সময়ে নামাজ আদায় করুন। ধন্যবাদ। 👨‍🔧 🪓 🔨 ⛏ ⚒ 🛠 🔧 ⛑
+            </span>
+        </div>
+    </div>
 
     <footer class="app-footer">
         <p>&copy; 2025 Rakib Ahmed. All rights reserved.</p>
     </footer>
+
+    <!-- Employee Details Modal -->
+    <div id="employeeModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <img id="modalEmployeePhoto" src="" alt="Employee Photo">
+            <h3 id="modalEmployeeName"></h3>
+            <p id="modalEmployeeDesignation"></p>
+            <p><strong>Blood Group:</strong> <span id="modalEmployeeBloodGroup"></span></p>
+            <p><strong>Mobile:</strong> <span id="modalEmployeeMobile"></span></p>
+            <a id="callNowButton" href="#" class="call-button">Call Now</a>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
