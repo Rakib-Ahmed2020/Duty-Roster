@@ -39,11 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const employees = [
         { id: 'lineman1', name: 'Md. Habibur Rahman', designation: 'Lineman Grade-1', photo: './20250716_195749.jpg', shortName: 'Habib', bloodGroup: 'B+', mobileNumber: '01721514164' },
         { id: 'lineman2', name: 'Shahinur Rahman', designation: 'Lineman Grade-1', photo: './shahinur.jpg', shortName: 'Shahinur', bloodGroup: 'AB+', mobileNumber: '01721338529' },
-        { id: 'lineman3', name: 'Md. Iqram Hossain', designation: 'Lineman Grade-2', photo: './1000078061.jpg', shortName: 'Iqram', bloodGroup: 'O+', mobileNumber: '01856329315' },
+        { id: 'lineman3', name: 'Md. Iqram Hossain', designation: 'Lineman Grade-2', photo: './1000078061.jpg', shortName: 'Iqram', bloodGroup: 'AB+', mobileNumber: '01856329315' },
         { id: 'lineman4', name: 'Md. Khairul Islam', designation: 'Lineman Grade-2 ', photo: './1000078055.jpg', shortName: 'Khairul', bloodGroup: 'AB+', mobileNumber: '01963518200' },
         { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './1000078060.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
         { id: 'lineman6', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
-        { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './IMG-20250717-WA0002.jpg', shortName: 'Rafiq', bloodGroup: 'O-', mobileNumber: '01767240630' },
+        { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './IMG-20250717-WA0002.jpg', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
     ];
 
     // Helper to get employee ID by short name
