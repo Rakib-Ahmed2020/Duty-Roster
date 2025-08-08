@@ -81,7 +81,7 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
-.card-section h2 {
+.card-section h2 h3{
     text-align: center;
     margin-bottom: 20px;
     color: var(--primary-blue);
@@ -622,4 +622,144 @@ body {
     .employee-grid {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
+}
+
+/* New CSS for the Management Signature Section */
+.signatures-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.signature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Full width on mobile */
+    max-width: 350px; /* Max width on desktop */
+    padding: 20px;
+    background-color: var(--light-gray);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.signature-card .signature-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    width: 100%; /* Ensures content fills the card */
+    justify-content: center;
+}
+
+.signature-card.left .signature-content {
+    flex-direction: row; /* Jr. Engineer on the left */
+}
+
+.signature-card.right .signature-content {
+    flex-direction: row-reverse; /* AGM on the right */
+}
+
+.signature-card .signature-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-blue);
+}
+
+.signature-card .signature-details {
+    text-align: left; /* Aligns text to the left for Jr. Eng */
+}
+
+.signature-card.right .signature-details {
+    text-align: right; /* Aligns text to the right for AGM */
+}
+
+.signature-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 2px;
+}
+
+.signature-card p {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.signature-card .signature-image {
+    width: 150px;
+    height: auto;
+    border-bottom: 2px solid var(--dark-gray);
+    margin-top: 10px;
+}
+
+/* Media Queries for Responsiveness */
+@media (min-width: 768px) {
+    .main-content-wrapper {
+        flex-direction: row; /* Layout sections side-by-side on tablet/desktop */
+        flex-wrap: wrap; /* Allows sections to wrap if needed */
+        justify-content: space-between; /* Distribute space between sections */
+    }
+
+    #employee-profiles-section {
+        flex: 1 1 calc(33.33% - 25px); /* Ensure it doesn't grow too much */
+        min-width: 280px; /* Minimum width to prevent squishing */
+    }
+
+    #calendar-section {
+        flex: 1 1 calc(66.66% - 25px); /* Approx 2/3 width */
+        max-width: calc(66.66% - 25px);
+        min-width: 450px; /* Minimum width for calendar readability */
+    }
+    
+    /* Adjust signature section to take full width or arrange as needed */
+    #management-signatures-section {
+        flex: 1 1 100%; /* Takes full width below calendar and profiles */
+        margin-top: 25px; /* Add some space above if it wraps */
+    }
+    
+    .signatures-wrapper {
+        justify-content: space-between; /* Space out the two signature cards */
+    }
+
+    .signature-card {
+        width: calc(50% - 10px); /* Adjust width to fit two cards in the wrapper */
+        max-width: none;
+    }
+
+    .employee-grid {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    }
+}
+
+/* For larger desktops */
+@media (min-width: 1024px) {
+    #employee-profiles-section {
+        flex: 0 0 280px; /* Fixed width for profile section */
+        max-width: 280px;
+    }
+
+    #calendar-section {
+        flex: 1 1 auto; /* Calendar takes remaining space */
+        max-width: none;
+    }
+}
+.signatures-heading {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--dark-gray);
+    font-size: 1.5em;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+.signatures-heading strong {
+    color: var(--primary-blue);
 }
