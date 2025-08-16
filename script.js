@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const employeeProfilesGrid = document.getElementById('employee-profiles-grid');
@@ -33,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth(); // 0-indexed (0 = Jan, 11 = Dec)
     let currentYear = currentDate.getFullYear();
+    // NEW: Variable to hold the audio object
+    let specialAudio = null;
 
     // --- Data ---
 
@@ -93,22 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const rotationPatterns = [
         // Week 1 Pattern: 1st employee Sat, 2nd Sun, 3rd Mon, 4th Tue, 5th Wed, 6th Thu, 7th Fri
         {
-            6: ['lineman1','lineman4','lineman6'], // Saturday
+            6: ['lineman1', 'lineman4', 'lineman6'], // Saturday
             0: [''], // Sunday
             1: ['lineman3'], // Monday
             2: ['lineman2'], // Tuesday
             3: ['lineman5'], // Wednesday
             4: [''], // Thursday
-            5: ['lineman7']  // Friday
+            5: ['lineman7'] // Friday
         },
         // Week 2 Pattern: 1st Sun, 2nd Mon, 3rd & 7th Sat, 4th Wed, 5th Thu, 6th Tue
         {
             0: [''], // Sunday
             1: ['lineman4'], // Monday
-            6: ['lineman3','lineman2','lineman5' ], // Saturday (Two employees)
+            6: ['lineman3', 'lineman2', 'lineman5'], // Saturday (Two employees)
             3: ['lineman7'], // Wednesday
             4: ['lineman1'], // Thursday
-            2: ['lineman6']  // Tuesday
+            2: ['lineman6'] // Tuesday
             // Note: No one is explicitly listed for Friday in Week 2, based on your description.
         },
         // Week 3 Pattern: 1st Mon, 2nd Tue, 3rd Wed, 4th Thu, 5th & 7th Sat, 6th Sun
@@ -118,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
             3: ['lineman5'], // Wednesday
             4: [''], // Thursday
             5: ['lineman6'], // Friday
-            6: ['lineman4', 'lineman1','lineman7'], // Saturday (Two employees)
-            0: ['']  // Sunday
+            6: ['lineman4', 'lineman1', 'lineman7'], // Saturday (Two employees)
+            0: [''] // Sunday
             // Note: No one is explicitly listed for Friday in Week 3, based on your description.
         },
         // Week 4 Pattern: 1st Tue, 2nd Wed, 3rd Thu, 4th Sat, 5th Sun, 6th Fri, 7th Mon
@@ -127,10 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
             2: ['lineman1'], // Tuesday
             3: ['lineman6'], // Wednesday
             4: ['lineman3'], // Thursday
-            6: ['lineman2','lineman4','lineman7'], // Saturday
+            6: ['lineman2', 'lineman4', 'lineman7'], // Saturday
             0: [''], // Sunday
             5: [''], // Friday
-            1: ['lineman5']  // Monday
+            1: ['lineman5'] // Monday
         }
     ];
 
@@ -139,43 +140,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const nightShiftPatterns = [
         // Week 1
         {
-            6: ['Iqram', 'Shahinur'],    // Saturday
-            0: ['Rakib', 'Samsu'],     // Sunday
-            1: ['Samsu', 'Shahinur'],      // Monday
-            2: ['Habib', 'Rafiq'],     // Tuesday
-            3: ['Shahinur', 'Khairul'],      // Wednesday
-            4: ['Iqram', 'Rakib'],  // Thursday
-            5: ['Habib', 'Khairul']      // Friday
+            6: ['Iqram', 'Shahinur'], // Saturday
+            0: ['Rakib', 'Samsu'], // Sunday
+            1: ['Samsu', 'Shahinur'], // Monday
+            2: ['Habib', 'Rafiq'], // Tuesday
+            3: ['Shahinur', 'Khairul'], // Wednesday
+            4: ['Iqram', 'Rakib'], // Thursday
+            5: ['Habib', 'Khairul'] // Friday
         },
         // Week 2
         {
-            6: ['Habib', 'Rafiq'],     // Saturday
-            0: ['Iqram', 'Khairul'],  // Sunday
-            1: ['Samsu', 'Habib'],     // Monday
-            2: ['Rakib', 'Rafiq'],    // Tuesday
-            3: ['Khairul', 'Shahinur'],     // Wednesday
-            4: ['Samsu', 'Iqram'],    // Thursday
-            5: ['Rakib', 'Shahinur']       // Friday
+            6: ['Habib', 'Rafiq'], // Saturday
+            0: ['Iqram', 'Khairul'], // Sunday
+            1: ['Samsu', 'Habib'], // Monday
+            2: ['Rakib', 'Rafiq'], // Tuesday
+            3: ['Khairul', 'Shahinur'], // Wednesday
+            4: ['Samsu', 'Iqram'], // Thursday
+            5: ['Rakib', 'Shahinur'] // Friday
         },
         // Week 3
         {
-            6: ['Shahinur', 'Samsu'],  // Saturday
-            0: ['Rafiq', 'Khairul'],  // Sunday
-            1: ['Rakib', 'Khairul'],      // Monday
-            2: ['Iqram', 'Samsu'],     // Tuesday
-            3: ['Habib', 'Rafiq'],     // Wednesday
-            4: ['Shahinur', 'Rakib'],      // Thursday
-            5: ['Iqram', 'Habib']      // Friday
+            6: ['Shahinur', 'Samsu'], // Saturday
+            0: ['Rafiq', 'Khairul'], // Sunday
+            1: ['Rakib', 'Khairul'], // Monday
+            2: ['Iqram', 'Samsu'], // Tuesday
+            3: ['Habib', 'Rafiq'], // Wednesday
+            4: ['Shahinur', 'Rakib'], // Thursday
+            5: ['Iqram', 'Habib'] // Friday
         },
         // Week 4
         {
-            6: ['Habib', 'Samsu'],     // Saturday
-            0: ['Shahinur', 'Iqram'],      // Sunday
-            1: ['Iqram', 'Rafiq'],      // Monday
-            2: ['Shahinur', 'Rakib'],     // Tuesday
-            3: ['Rakib', 'Iqram'],     // Wednesday
-            4: ['Samsu', 'Khairul'],  // Thursday
-            5: ['Rakib', 'Khairul']    // Friday
+            6: ['Habib', 'Samsu'], // Saturday
+            0: ['Shahinur', 'Iqram'], // Sunday
+            1: ['Iqram', 'Rafiq'], // Monday
+            2: ['Shahinur', 'Rakib'], // Tuesday
+            3: ['Rakib', 'Iqram'], // Wednesday
+            4: ['Samsu', 'Khairul'], // Thursday
+            5: ['Rakib', 'Khairul'] // Friday
         }
     ];
 
@@ -237,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Convert short names to full IDs if 'isShortNameConversionNeeded' is true
                     const employeeIds = isShortNameConversionNeeded ? employeeNamesOrIds.map(getEmployeeIdByShortName).filter(id => id !== null) : employeeNamesOrIds;
                     if (employeeIds.length > 0) {
-                            routine[fullDate] = employeeIds;
+                        routine[fullDate] = employeeIds;
                     }
                 }
             }
@@ -404,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // If current month is not today's month, or current year is not today's year,
         // select the first day of the current calendar month.
         if (currentMonth !== today.getMonth() || currentYear !== today.getFullYear()) {
-             initialSelectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-01`;
+            initialSelectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-01`;
         }
 
         const initialSelectedDayDiv = calendarGrid.querySelector(`[data-date="${initialSelectedDate}"]`);
@@ -467,11 +468,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- Working Employees Info ---
-        // Filter out resting employees AND (if it's Friday) extra emergency employees
-        const workingEmployees = employees.filter(emp =>
-            !restingEmployeeIds.includes(emp.id) &&
-            !(dayOfWeek === 5 && extraEmergencyEmployeeIds.includes(emp.id)) // Exclude emergency group on Fridays
-        );
+        // CORRECTED LOGIC: Only filter out resting employees.
+        const workingEmployees = employees.filter(emp => !restingEmployeeIds.includes(emp.id));
         renderEmployeeCards(workingEmployeesGrid, workingEmployees, noWorkingMessage);
     }
 
@@ -482,7 +480,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function openEmployeeModal(employeeId) {
         const employee = employees.find(emp => emp.id === employeeId);
         if (employee) {
-            modalEmployeePhoto.src = employee.photo;
+            // NEW: Check for the specific employee and apply special features
+            if (employeeId === 'lineman6') {
+                modalEmployeePhoto.src = './samsu-kupa.png'; // Path to the new picture
+                if (specialAudio) { // Stop any previously playing audio
+                    specialAudio.pause();
+                    specialAudio.currentTime = 0;
+                }
+                specialAudio = new Audio('./koba samsu.mp3'); // Path to the music file
+                specialAudio.play();
+            }
+              /*         else if (employeeId === 'lineman6') {
+                modalEmployeePhoto.src = './add sigma sunglasses.png'; // Path to the new picture
+                if (specialAudio) { // Stop any previously playing audio
+                    specialAudio.pause();
+                    specialAudio.currentTime = 0;
+                }
+                specialAudio = new Audio('./videoplayback.m4a'); // Path to the music file
+                specialAudio.play();
+            } */
+            
+            else {
+                modalEmployeePhoto.src = employee.photo;
+            }
+
             modalEmployeePhoto.alt = employee.name;
             // Fallback for broken images in modal
             modalEmployeePhoto.onerror = function() {
@@ -505,6 +526,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * Closes the employee details modal.
      */
     function closeEmployeeModal() {
+        // NEW: Stop the special audio if it's playing
+        if (specialAudio) {
+            specialAudio.pause();
+            specialAudio.currentTime = 0;
+        }
         employeeModal.style.display = 'none'; // Hide the modal overlay
     }
 
