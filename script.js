@@ -481,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const employee = employees.find(emp => emp.id === employeeId);
         if (employee) {
             // NEW: Check for the specific employee and apply special features
-            if (employeeId === 'lineman6') {
+         /*   if (employeeId === 'lineman6') {
                 modalEmployeePhoto.src = './samsu-kupa.png'; // Path to the new picture
                 if (specialAudio) { // Stop any previously playing audio
                     specialAudio.pause();
@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 specialAudio = new Audio('./koba samsu.mp3'); // Path to the music file
                 specialAudio.play();
-            }
+            }*/
               /*         else if (employeeId === 'lineman6') {
                 modalEmployeePhoto.src = './add sigma sunglasses.png'; // Path to the new picture
                 if (specialAudio) { // Stop any previously playing audio
@@ -500,10 +500,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 specialAudio.play();
             } */
             
-            else {
+           /* else {
                 modalEmployeePhoto.src = employee.photo;
             }
-
+        */
+             modalEmployeePhoto.src = employee.photo;
             modalEmployeePhoto.alt = employee.name;
             // Fallback for broken images in modal
             modalEmployeePhoto.onerror = function() {
