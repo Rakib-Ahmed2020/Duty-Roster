@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './1000078060.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
         { id: 'lineman6', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
         { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './IMG-20250717-WA0002.jpg', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
+        { id: 'lineman8', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'mahim', bloodGroup: 'A+', mobileNumber: '01770885997' },
+
     ];
 
     // Helper to get employee ID by short name
@@ -59,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const holidays = {
         '2025-02-14': 'Shab-e-Barat (শবে বরাত)*',
         '2025-02-21': 'Shaheed Day and International Mother Language Day (শহীদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস)',
-        '2025-03-17': "Bangabandhu's Birthday and National Children's Day (জাতির পিতা বঙ্গবন্ধু শেখ মুজিবুর রহমানের জন্মবার্ষিকী ও জাতীয় শিশু দিবস)",
         '2025-03-26': 'Independence Day (স্বাধীনতা দিবস)',
         '2025-03-28': 'Jumatul Bidah (জুমাতুল বিদা)*',
         '2025-03-27': 'Shab-e-Qadr (শবে কদর)*',
