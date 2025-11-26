@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office Duty Roster - Linemen Team</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Load Tailwind CSS for utility classes (if you want to use it in the future, currently custom CSS is used) -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="stylesheet" href="style.css">
     <style>
         /* For demonstration purposes, adding some body height to show the fixed footer */
@@ -26,8 +24,7 @@
         <section id="employee-profiles-section" class="card-section">
             <h2>Our Linemen Team</h2>
             <div id="employee-profiles-grid" class="employee-grid">
-                <!-- Employee cards will be rendered here by JavaScript -->
-           </div>
+                </div>
         </section>
 
         <section id="calendar-section" class="card-section">
@@ -38,8 +35,7 @@
                 <button id="nextMonth">Next</button>
             </div>
             <div id="calendar-grid" class="calendar-grid">
-                <!-- Calendar days will be rendered here by JavaScript -->
-         </div>
+                </div>
             <div id="holiday-description-box" class="info-box">
                 <h4>Selected Date Info: <span id="selectedDateDisplay"></span></h4>
                 <p id="holiday-info">Click on a date to see details.</p>
@@ -74,12 +70,16 @@
                 <p class="no-night-shift-message">No one is assigned for night shift today.</p>
             </div>
         </section>
-                <!-- NEW: Management Signature Section -->
+        
+        <section id="monthly-summary-section" class="card-section">
+            <h2>Monthly Duty Summary: <span id="summaryMonthYear"></span></h2>
+            <div id="monthly-duty-table-container">
+                </div>
+        </section>
         <section id="management-signatures-section" class="card-section">
             <div class="signatures-wrapper">
             <h3 class="signatures-heading">Signature and Recommendation of <strong>Authorities</strong>:</h3>
-                            <!-- Jr. Engineer's signature card -->
-                <div class="signature-card left">
+                            <div class="signature-card left">
                     <div class="signature-content">
                         <img src="./walid.jpg" alt="Jr. Engineer's Photo" class="signature-photo">
                         <div class="signature-details">
@@ -90,7 +90,6 @@
                     <img src="https://placehold.co/150x50/cccccc/000?text=Signature" alt="Jr. Engineer's Signature" class="signature-image">
                 </div>
 
-                <!-- AGM's signature card -->
                 <div class="signature-card right">
                     <div class="signature-content">
                         <img src="./kabir.jpg" alt="AGM's Photo" class="signature-photo">
@@ -103,10 +102,8 @@
                 </div>
             </div>
         </section>
-        <!-- END NEW SECTION -->
-    </main>
+        </main>
 
-    <!-- CSS Marquee Replacement -->
     <div class="marquee-container">
         <div class="marquee-content">
             <span>
@@ -119,7 +116,6 @@
         <p>&copy; 2025 Rakib Ahmed. All rights reserved.</p>
     </footer>
 
-    <!-- Employee Details Modal -->
     <div id="employeeModal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-button">&times;</span>
