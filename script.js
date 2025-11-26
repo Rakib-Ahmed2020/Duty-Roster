@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const extraEmergencyGrid = document.getElementById('extra-emergency-grid');
     const noExtraEmergencyMessage = extraEmergencyGrid.querySelector('.no-extra-emergency-message');
 
+    // NEW: Monthly Summary DOM Elements
+    const summaryMonthYearElem = document.getElementById('summaryMonthYear');
+    const monthlyDutyTableContainer = document.getElementById('monthly-duty-table-container');
+
     // --- Modal DOM Elements ---
     const employeeModal = document.getElementById('employeeModal');
     const closeButton = employeeModal.querySelector('.close-button');
@@ -46,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './1000078060.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
         { id: 'lineman6', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
         { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './IMG-20250717-WA0002.jpg', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
-        { id: 'lineman8', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'mahim', bloodGroup: 'A+', mobileNumber: '01770885997' },
+        { id: 'lineman8', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'mahim', bloodGroup: 'O+', mobileNumber: '01770885997' },
 
     ];
 
@@ -249,15 +253,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return routine;
     }
 
-    // Generate the rest day routine. '2025-07-19' is a Saturday, chosen as the start of "Week 1" for your rotation.
+    // Generate the rest day routine. '2025-08-02' is a Saturday, chosen as the start of "Week 1" for your rotation.
     const restDayRoutine = generateRotatingRoutine(employees, rotationPatterns, '2025-08-02', 12, false);
 
     // Generate the night shift routine using the same logic but different patterns
-    // '2025-07-19' is a Saturday, chosen as the start of "Week 1" for your rotation.
     const nightShiftRoutine = generateRotatingRoutine(employees, nightShiftPatterns, '2025-08-02', 12, true);
 
     // NEW: Generate the Extra Emergency Group routine
-    // '2025-07-19' is a Saturday, chosen as the start of "Week 1" for your rotation.
     const extraEmergencyRoutine = generateRotatingRoutine(employees, extraEmergencyPatterns, '2025-08-02', 12, true);
 
 
@@ -314,6 +316,89 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    
+    // NEW FUNCTION: Calculate and Render Monthly Summary (List Dates)
+    /**
+     * Calculates the rest and night shift dates for every employee in the current month
+     * and renders the summary table.
+     */
+    function calculateAndRenderMonthlySummary() {
+        // Clear previous content
+        monthlyDutyTableContainer.innerHTML = '';
+
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        
+        // Update the header
+        summaryMonthYearElem.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // 1. Aggregate duty dates by employee
+        const summary = employees.reduce((acc, emp) => {
+            acc[emp.id] = { name: emp.name, restDays: [], nightShifts: [] };
+            return acc;
+        }, {});
+
+        // Iterate through all days in the current month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const fullDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            // Use day of month padded to two digits (e.g., '01', '15')
+            const dateOfMonth = String(day).padStart(2, '0');
+
+            // Check for Rest Day
+            const restingEmployeeIds = restDayRoutine[fullDate] || [];
+            restingEmployeeIds.forEach(id => {
+                if (summary[id]) {
+                    summary[id].restDays.push(dateOfMonth);
+                }
+            });
+
+            // Check for Night Shift
+            const nightShiftEmployeeIds = nightShiftRoutine[fullDate] || [];
+            nightShiftEmployeeIds.forEach(id => {
+                if (summary[id]) {
+                    summary[id].nightShifts.push(dateOfMonth);
+                }
+            });
+        }
+
+        // 2. Render the table
+        let tableHTML = `
+            <table class="duty-summary-table">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Rest Day Dates (D/M)</th>
+                        <th>Night Shift Dates (D/M)</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        Object.values(summary).forEach(empData => {
+            // Join dates with comma and space
+            const restDates = empData.restDays.length > 0 ? empData.restDays.join(', ') : '—';
+            const nightShiftDates = empData.nightShifts.length > 0 ? empData.nightShifts.join(', ') : '—';
+
+            tableHTML += `
+                <tr>
+                    <td>${empData.name}</td>
+                    <td>${restDates}</td>
+                    <td>${nightShiftDates}</td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `
+                </tbody>
+            </table>
+        `;
+
+        monthlyDutyTableContainer.innerHTML = tableHTML;
+    }
+
 
     /**
      * Renders the calendar grid for the current month and year.
@@ -418,6 +503,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Just display info for current date, but no day will be marked as selected.
             displayDateInfo(initialSelectedDate);
         }
+        
+        // NEW: Calculate and render the monthly summary after the calendar is fully set up
+        calculateAndRenderMonthlySummary();
     }
 
     /**
@@ -481,30 +569,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function openEmployeeModal(employeeId) {
         const employee = employees.find(emp => emp.id === employeeId);
         if (employee) {
-            // NEW: Check for the specific employee and apply special features
-         /*   if (employeeId === 'lineman6') {
-                modalEmployeePhoto.src = './samsu-kupa.png'; // Path to the new picture
-                if (specialAudio) { // Stop any previously playing audio
-                    specialAudio.pause();
-                    specialAudio.currentTime = 0;
-                }
-                specialAudio = new Audio('./koba samsu.mp3'); // Path to the music file
-                specialAudio.play();
-            }*/
-              /*         else if (employeeId === 'lineman6') {
-                modalEmployeePhoto.src = './add sigma sunglasses.png'; // Path to the new picture
-                if (specialAudio) { // Stop any previously playing audio
-                    specialAudio.pause();
-                    specialAudio.currentTime = 0;
-                }
-                specialAudio = new Audio('./videoplayback.m4a'); // Path to the music file
-                specialAudio.play();
-            } */
-            
-           /* else {
-                modalEmployeePhoto.src = employee.photo;
-            }
-        */
              modalEmployeePhoto.src = employee.photo;
             modalEmployeePhoto.alt = employee.name;
             // Fallback for broken images in modal
