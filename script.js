@@ -43,14 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Employee Data (Your 7 Linemen) - ADDED bloodGroup and mobileNumber
     const employees = [
-        { id: 'lineman1', name: 'Md. Habibur Rahman', designation: 'Lineman Grade-1', photo: './20250716_195749.jpg', shortName: 'Habib', bloodGroup: 'B+', mobileNumber: '01721514164' },
-        { id: 'lineman2', name: 'Shahinur Rahman', designation: 'Lineman Grade-1', photo: './shahinur.jpg', shortName: 'Shahinur', bloodGroup: 'AB+', mobileNumber: '01721338529' },
-        { id: 'lineman3', name: 'Md. Iqram Hossain', designation: 'Lineman Grade-2', photo: './iqram.jpg', shortName: 'Iqram', bloodGroup: 'AB+', mobileNumber: '01856329315' },
-        { id: 'lineman4', name: 'Md. Khairul Islam', designation: 'Lineman Grade-2 ', photo: './1000078055.jpg', shortName: 'Khairul', bloodGroup: 'AB+', mobileNumber: '01963518200' },
-        { id: 'lineman5', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './Rakib_profile.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
-        { id: 'lineman6', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
-        { id: 'lineman7', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './rofik.png', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
-        { id: 'lineman8', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'mahim', bloodGroup: 'O+', mobileNumber: '01770885997' },
+        { id: 'lineman1', name: 'Harunur Rashid', designation: 'Line Technician', photo: './harun.png', shortName: 'Harun', bloodGroup: 'B+', mobileNumber: '01708658384' },
+        { id: 'lineman2', name: 'Md. Habibur Rahman', designation: 'Lineman Grade-1', photo: './20250716_195749.jpg', shortName: 'Habib', bloodGroup: 'B+', mobileNumber: '01721514164' },
+        { id: 'lineman3', name: 'Shahinur Rahman', designation: 'Lineman Grade-1', photo: './shahinurlm.jpg', shortName: 'Shahinur', bloodGroup: 'AB+', mobileNumber: '01721338529' },
+        { id: 'lineman4', name: 'Md. Iqram Hossain', designation: 'Lineman Grade-2', photo: './1000078061.jpg', shortName: 'Iqram', bloodGroup: 'AB+', mobileNumber: '01856329315' },
+        { id: 'lineman5', name: 'Md. Khairul Islam', designation: 'Lineman Grade-2 ', photo: './1000078055.jpg', shortName: 'Khairul', bloodGroup: 'AB+', mobileNumber: '01963518200' },
+        { id: 'lineman6', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './1000078060.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
+        { id: 'lineman7', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'mahim', bloodGroup: 'O+', mobileNumber: '01770885997' },
+        { id: 'lineman8', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
+        { id: 'lineman9', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './IMG-20250717-WA0002.jpg', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
 
     ];
 
@@ -99,44 +100,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const rotationPatterns = [
         // Week 1 Pattern: 1st employee Sat, 2nd Sun, 3rd Mon, 4th Tue, 5th Wed, 6th Thu, 7th Fri
         {
-            6: ['lineman1', 'lineman4', 'lineman6'], // Saturday
-            0: [''], // Sunday
-            1: ['lineman3'], // Monday
-            2: ['lineman2'], // Tuesday
-            3: ['lineman5'], // Wednesday
-            4: [''], // Thursday
-            5: ['lineman7'] // Friday
+            6: ['lineman3', 'lineman4'], // Saturday
+            0: ['lineman5'], // Sunday
+            1: ['lineman6'], // Monday
+            2: ['lineman7'], // Tuesday
+            3: ['lineman8'], // Wednesday
+            4: ['lineman9'], // Thursday
+            5: ['lineman1','lineman2'] // Friday
         },
         // Week 2 Pattern: 1st Sun, 2nd Mon, 3rd & 7th Sat, 4th Wed, 5th Thu, 6th Tue
         {
-            0: [''], // Sunday
-            1: ['lineman4'], // Monday
-            6: ['lineman3', 'lineman2', 'lineman5'], // Saturday (Two employees)
-            3: ['lineman7'], // Wednesday
-            4: ['lineman1'], // Thursday
-            2: ['lineman6'] // Tuesday
+            0: ['lineman7'], // Sunday
+            1: ['lineman1'], // Monday
+            6: ['lineman5', 'lineman6'], // Saturday
+            3: ['lineman9'], // Wednesday
+            4: ['lineman8'], // Thursday
+            2: ['lineman2'] // Tuesday
             // Note: No one is explicitly listed for Friday in Week 2, based on your description.
         },
         // Week 3 Pattern: 1st Mon, 2nd Tue, 3rd Wed, 4th Thu, 5th & 7th Sat, 6th Sun
         {
             1: ['lineman3'], // Monday
-            2: ['lineman2'], // Tuesday
-            3: ['lineman5'], // Wednesday
-            4: [''], // Thursday
-            5: ['lineman6'], // Friday
-            6: ['lineman4', 'lineman1', 'lineman7'], // Saturday (Two employees)
-            0: [''] // Sunday
+            2: ['lineman4'], // Tuesday
+            3: ['lineman2'], // Wednesday
+            4: ['lineman9'], // Thursday
+            5: ['lineman5', 'lineman6'], // Friday
+            6: ['lineman7', 'lineman8'], // Saturday (Two employees)
+            0: ['lineman1'] // Sunday
             // Note: No one is explicitly listed for Friday in Week 3, based on your description.
         },
         // Week 4 Pattern: 1st Tue, 2nd Wed, 3rd Thu, 4th Sat, 5th Sun, 6th Fri, 7th Mon
         {
-            2: ['lineman1'], // Tuesday
+            2: ['lineman5'], // Tuesday
             3: ['lineman6'], // Wednesday
-            4: ['lineman3'], // Thursday
+            4: ['lineman2'], // Thursday
             6: ['lineman2', 'lineman4', 'lineman7'], // Saturday
-            0: [''], // Sunday
-            5: [''], // Friday
-            1: ['lineman5'] // Monday
+            0: ['lineman7'], // Sunday
+            5: ['lineman8', 'lineman9'], // Friday
+            1: ['lineman4'] // Monday
         }
     ];
 
