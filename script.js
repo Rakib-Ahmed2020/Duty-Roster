@@ -111,12 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Week 2 Pattern: 1st Sun, 2nd Mon, 3rd & 7th Sat, 4th Wed, 5th Thu, 6th Tue
         {
             0: [], // Sunday
-            1: ['lineman1'], // Monday
+            1: ['lineman8'], // Monday
             5: ['lineman3','lineman4'], // Friday
-            6: ['lineman5', 'lineman6','lineman7'], // Saturday
-            3: ['lineman9'], // Wednesday
-            4: ['lineman8'], // Thursday
-            2: ['lineman2'] // Tuesday
+            6: ['lineman2', 'lineman9','lineman1'], // Saturday
+            3: ['lineman6'], // Wednesday
+            4: ['lineman7'], // Thursday
+            2: ['lineman5'] // Tuesday
             // Note: No one is explicitly listed for Friday in Week 2, based on your description.
         },
         // Week 3 Pattern: 1st Mon, 2nd Tue, 3rd Wed, 4th Thu, 5th & 7th Sat, 6th Sun
