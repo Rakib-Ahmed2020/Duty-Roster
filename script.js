@@ -126,11 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
             3: ['lineman2'], // Wednesday
             4: ['lineman9'], // Thursday
             5: ['lineman5', 'lineman6','lineman7'], // Friday
-            6: ['lineman7'], // Saturday (Two employees)
+            6: ['lineman8'], // Saturday
             0: ['lineman1'] // Sunday
-            // Note: No one is explicitly listed for Friday in Week 3, based on your description.
+           
         },
-        
+        //week 4
         {
             2: ['lineman5'], // Tuesday
             3: ['lineman6','lineman1'], // Wednesday
