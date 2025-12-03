@@ -113,19 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
             0: [], // Sunday
             1: ['lineman8'], // Monday
             5: ['lineman3','lineman4'], // Friday
-            6: ['lineman2', 'lineman9','lineman1'], // Saturday
-            3: ['lineman6'], // Wednesday
+            6: ['lineman5', 'lineman9','lineman6'], // Saturday
+            3: ['lineman1'], // Wednesday
             4: ['lineman7'], // Thursday
-            2: ['lineman5'] // Tuesday
+            2: ['lineman2'] // Tuesday
             // Note: No one is explicitly listed for Friday in Week 2, based on your description.
         },
         // Week 3 Pattern: 1st Mon, 2nd Tue, 3rd Wed, 4th Thu, 5th & 7th Sat, 6th Sun
         {
             1: ['lineman3'], // Monday
             2: ['lineman4'], // Tuesday
-            3: ['lineman2'], // Wednesday
+            3: ['lineman7'], // Wednesday
             4: ['lineman9'], // Thursday
-            5: ['lineman5', 'lineman6','lineman7'], // Friday
+            5: ['lineman5', 'lineman6','lineman2'], // Friday
             6: ['lineman8'], // Saturday
             0: ['lineman1'] // Sunday
            
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // NEW: Extra Emergency Group Rotation Patterns (only for Friday - day 5)
     const extraEmergencyPatterns = [
         { 5: ['Rakib', 'Khairul','Mahim'] },
-        { 5: ['Habib', 'Iqram', 'Harun'] },
+        { 5: ['Habib', 'Rafiq', 'Harun'] },
         { 5: ['Shahinur', 'Samsu', 'Rafiq'] },
         { 5: ['Harun', 'Habib', 'Shahinur'] }
     ];
