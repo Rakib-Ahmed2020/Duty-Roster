@@ -177,10 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     // Week 4
     {
-        6: ['Shahinur', 'Khairul'], // Saturday
+        6: ['Harun', 'Khairul'], // Saturday
         0: ['Rakib', 'Khairul'], // Sunday
         1: ['Habib', 'Samsu'], // Monday
-        2: ['Harun', 'Rafiq'], // Tuesday
+        2: ['Shahinur', 'Rafiq'], // Tuesday
         3: ['Iqram', 'Mahim'], // Wednesday
         4: ['Rakib', 'Harun'], // Thursday
         5: ['Harun', 'Shahinur'] // Friday
