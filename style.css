@@ -772,6 +772,9 @@ body {
     flex: 1 1 100%; /* Make it take full width */
     margin-top: 25px; /* Space from sections above */
 }
+.secret-section{
+    display: none;
+}
 
 .duty-summary-table {
     width: 100%;
@@ -815,3 +818,23 @@ body {
         font-size: 0.85rem;
     }
 }
+
+        /* Style the input and button */
+        #password-input {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
