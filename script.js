@@ -635,3 +635,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial render of the calendar and display info for today
     renderCalendar();
 });
+
+// Show the hidden Monthly summary
+        function checkPassword() {
+            // 1. Set your desired password here
+            const correctPassword = "104035"; 
+
+            // 2. Get the user's input
+            const userInput = document.getElementById("password-input").value;
+
+            // 3. Check if the input matches
+            if (userInput === correctPassword) {
+                // Show the secret section
+                document.getElementById("monthly-summary-section").classList.remove("secret-section");
+                
+            }
+        }
