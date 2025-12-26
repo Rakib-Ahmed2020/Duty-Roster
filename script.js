@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         2: ['Shahinur', 'Rafiq'], // Tuesday
         3: ['Iqram', 'Mahim'], // Wednesday
         4: ['Rakib', 'Khairul'], // Thursday
-        5: ['Harun', 'Shahinur'] // Friday
+        5: ['Iqram', 'Shahinur'] // Friday
     }
 ];
 
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { 5: ['Rakib', 'Khairul','Mahim'] },
         { 5: ['Habib', 'Rafiq', 'Harun'] },
         { 5: ['Shahinur', 'Samsu', 'Rafiq'] },
-        { 5: ['Harun', 'Habib', 'Shahinur'] }
+        { 5: ['Harun', 'Iqram', 'Shahinur'] }
     ];
 
 
