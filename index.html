@@ -70,13 +70,22 @@
                 <p class="no-night-shift-message">No one is assigned for night shift today.</p>
             </div>
         </section>
-        
- <!--       <section id="monthly-summary-section" class="card-section">
+            <h2>Restricted Access</h2>
+        <section>
+          <div id="login-container">
+           <input type="password" id="password-input" placeholder="Enter Password">
+           <button onclick="checkPassword()">Unlock</button>
+            <p id="error-message" style="color: red; display: none;">Incorrect password!</p>
+          </div> 
+          </section>
+
+        <section id="monthly-summary-section" class="card-section secret-section">
+            
             <h2>Monthly Duty Summary: <span id="summaryMonthYear"></span></h2>
             <div id="monthly-duty-table-container">
                 </div>
         </section> 
--->
+
         <section id="management-signatures-section" class="card-section">
             <div class="signatures-wrapper">
             <h3 class="signatures-heading">Signature and Recommendation of <strong>Authorities</strong>:</h3>
