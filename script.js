@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'lineman5', name: 'Md. Khairul Islam', designation: 'Lineman Grade-2 ', photo: './1000078055.jpg', shortName: 'Khairul', bloodGroup: 'AB+', mobileNumber: '01963518200' },
         { id: 'lineman6', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './Rakib_profile.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
         { id: 'lineman7', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'Mahim', bloodGroup: 'O+', mobileNumber: '01770885997' },
-        { id: 'lineman8', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
-        { id: 'lineman9', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './rofik.png', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
+        { id: 'lineman9', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
+        { id: 'lineman8', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './rofik.png', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
 
     ];
 
@@ -100,45 +100,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const rotationPatterns = [
         // Week 1 Pattern: 1st employee Sat, 2nd Sun, 3rd Mon, 4th Tue, 5th Wed, 6th Thu, 7th Fri
         {
-            6: ['lineman3', 'lineman4', 'lineman5'], // Saturday
-            0: [], // Sunday
-            1: ['lineman6'], // Monday
-            2: ['lineman7'], // Tuesday
-            3: ['lineman8'], // Wednesday
-            4: ['lineman9'], // Thursday
-            5: ['lineman1','lineman2'] // Friday
+            6: ['lineman2', 'lineman3', 'lineman9'], // Saturday
+            0: ['lineman6'], // Sunday
+            1: ['lineman4'], // Monday
+            2: ['lineman5'], // Tuesday
+            3: ['lineman7'], // Wednesday
+            4: [], // Thursday
+            5: ['lineman1','lineman8'] // Friday
         },
         // Week 2 Pattern: 1st Sun, 2nd Mon, 3rd & 7th Sat, 4th Wed, 5th Thu, 6th Tue
         {
             0: [], // Sunday
-            1: ['lineman8'], // Monday
-            5: ['lineman3','lineman4'], // Friday
-            6: ['lineman5', 'lineman9','lineman6'], // Saturday
-            3: ['lineman1'], // Wednesday
-            4: ['lineman7'], // Thursday
-            2: ['lineman2'] // Tuesday
+            1: ['lineman6'], // Monday
+            5: ['lineman7','lineman8','lineman9'], // Friday
+            6: ['lineman1', 'lineman3','lineman2'], // Saturday
+            3: ['lineman4'], // Wednesday
+            4: [], // Thursday
+            2: ['lineman5'] // Tuesday
             // Note: No one is explicitly listed for Friday in Week 2, based on your description.
         },
         // Week 3 Pattern: 1st Mon, 2nd Tue, 3rd Wed, 4th Thu, 5th & 7th Sat, 6th Sun
         {
-            1: ['lineman3'], // Monday
-            2: ['lineman4'], // Tuesday
-            3: ['lineman7'], // Wednesday
-            4: ['lineman9'], // Thursday
-            5: ['lineman5', 'lineman6','lineman2'], // Friday
-            6: ['lineman8'], // Saturday
-            0: ['lineman1'] // Sunday
-           
+            0: ['lineman6'], // Sunday
+            1: ['lineman4'], // Monday
+            2: ['lineman5'], // Tuesday
+            3: ['lineman9'], // Wednesday
+            4: [], // Thursday
+            5: ['lineman1', 'lineman8'], // Friday
+            6: ['lineman2','lineman3','lineman7'] // Saturday
+
         },
         //week 4
         {
             2: ['lineman5'], // Tuesday
-            3: ['lineman6','lineman1'], // Wednesday
-            4: ['lineman2'], // Thursday
-            6: ['lineman7'], // Saturday
-            0: ['lineman3'], // Sunday
-            5: ['lineman8', 'lineman9'], // Friday
-            1: ['lineman4'] // Monday
+            3: ['lineman3'], // Wednesday
+            4: [], // Thursday
+            6: ['lineman1','lineman8','lineman9'], // Saturday
+            0: ['lineman4'], // Sunday
+            5: ['lineman2', 'lineman7'], // Friday
+            1: ['lineman6'] // Monday
         }
     ];
 
@@ -147,52 +147,52 @@ document.addEventListener('DOMContentLoaded', () => {
    const nightShiftPatterns = [
     // Week 1
     {
-        6: ['Harun', 'Samsu'], // Saturday
-        0: ['Shahinur', 'Rafiq'], // Sunday
-        1: ['Iqram', 'Mahim'], // Monday
-        2: ['Habib', 'Rakib'], // Tuesday
+        6: ['Harun', 'Rafiq'], // Saturday
+        0: ['Habib', 'Samsu'], // Sunday
+        1: ['Harun', 'Mahim'], // Monday
+        2: ['Samsu', 'Rakib'], // Tuesday
         3: ['Shahinur', 'Mahim'], // Wednesday
         4: ['Habib', 'Khairul'], // Thursday
-        5: ['Khairul', 'Rakib'] // Friday
+        5: ['Khairul', 'Iqram'] // Friday
     },
     // Week 2
     {
         6: ['Iqram', 'Samsu'], // Saturday
         0: ['Shahinur', 'Habib'], // Sunday
         1: ['Harun', 'Mahim'], // Monday
-        2: ['Khairul', 'Samsu'], // Tuesday
+        2: ['Iqram', 'Samsu'], // Tuesday
         3: ['Khairul', 'Rafiq'], // Wednesday
-        4: ['Harun', 'Rakib'], // Thursday
-        5: ['Habib', 'Rafiq'] // Friday
+        4: ['Habib', 'Rakib'], // Thursday
+        5: ['Harun', 'Shahinur'] // Friday
     },
     // Week 3
     {
-        6: ['Iqram', 'Mahim'], // Saturday
-        0: ['Mahim', 'Rakib'], // Sunday
+        6: ['Iqram', 'Khairul'], // Saturday
+        0: ['Mahim', 'Habib'], // Sunday
         1: ['Harun', 'Rafiq'], // Monday
         2: ['Harun', 'Samsu'], // Tuesday
-        3: ['Habib', 'Rafiq'], // Wednesday
+        3: ['Rakib', 'Rafiq'], // Wednesday
         4: ['Shahinur', 'Iqram'], // Thursday
-        5: ['Shahinur', 'Samsu'] // Friday
+        5: ['Khairul', 'Rakib'] // Friday
     },
     // Week 4
     {
-        6: ['Harun', 'Samsu'], // Saturday
-        0: ['Rakib', 'Khairul'], // Sunday
-        1: ['Habib', 'Samsu'], // Monday
+        6: ['Rakib', 'Mahim'], // Saturday
+        0: ['Harun', 'Samsu'], // Sunday
+        1: ['Habib', 'Rafiq'], // Monday
         2: ['Shahinur', 'Rafiq'], // Tuesday
         3: ['Iqram', 'Mahim'], // Wednesday
         4: ['Rakib', 'Khairul'], // Thursday
-        5: ['Iqram', 'Shahinur'] // Friday
+        5: ['Harun', 'Shahinur'] // Friday
     }
 ];
 
     // NEW: Extra Emergency Group Rotation Patterns (only for Friday - day 5)
     const extraEmergencyPatterns = [
-        { 5: ['Rakib', 'Khairul','Mahim'] },
-        { 5: ['Habib', 'Rafiq', 'Harun'] },
-        { 5: ['Shahinur', 'Samsu', 'Rafiq'] },
-        { 5: ['Harun', 'Iqram', 'Shahinur'] }
+        { 5: ['Rakib', 'Khairul','Iqram'] },
+        { 5: ['Iqram', 'Harun','Habib'] },
+        { 5: ['Rakib', 'Khairul','Iqram'] },
+        { 5: ['Harun', 'Khairul', 'Shahinur'] }
     ];
 
 
@@ -210,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // This acts as the definitive start of "Week 1" for the rotation cycle.
         let firstCycleSaturday = new Date(rotationStartDate);
         firstCycleSaturday.setHours(0, 0, 0, 0); // Normalize time for accurate comparisons
-        // Ensure firstCycleSaturday is actually a Saturday
-        while (firstCycleSaturday.getDay() !== 6) { // 6 is Saturday
+        // Ensure firstCycleSaturday is actually a Saturday (I changed it to Sunday)
+        while (firstCycleSaturday.getDay() !== 0) { // 6 is Saturday(I changed it to Sunday)
             firstCycleSaturday.setDate(firstCycleSaturday.getDate() + 1);
         }
 
@@ -251,13 +251,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Generate the rest day routine. '2025-08-02' is a Saturday, chosen as the start of "Week 1" for your rotation.
-    const restDayRoutine = generateRotatingRoutine(employees, rotationPatterns, '2025-08-02', 12, false);
+    const restDayRoutine = generateRotatingRoutine(employees, rotationPatterns, '2026-02-08', 12, false);
 
     // Generate the night shift routine using the same logic but different patterns
-    const nightShiftRoutine = generateRotatingRoutine(employees, nightShiftPatterns, '2025-08-02', 12, true);
+    const nightShiftRoutine = generateRotatingRoutine(employees, nightShiftPatterns, '2026-02-08', 12, true);
 
     // NEW: Generate the Extra Emergency Group routine
-    const extraEmergencyRoutine = generateRotatingRoutine(employees, extraEmergencyPatterns, '2025-08-02', 12, true);
+    const extraEmergencyRoutine = generateRotatingRoutine(employees, extraEmergencyPatterns, '2026-02-08', 12, true);
 
 
     // --- Functions ---
