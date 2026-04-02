@@ -639,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Show the hidden Monthly summary
         function checkPassword() {
             // 1. Set your desired password here
-            const correctPassword = "104035"; 
+            const correctPassword = "326062"; 
 
             // 2. Get the user's input
             const userInput = document.getElementById("password-input").value;
