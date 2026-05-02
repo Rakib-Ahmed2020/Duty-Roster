@@ -1,27 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Elements ---
     const employeeProfilesGrid = document.getElementById('employee-profiles-grid');
+    const employeeProfilesContent = document.getElementById('employee-profiles-content');
+    const toggleLinemenBtn = document.getElementById('toggle-linemen-btn');
+
     const calendarGrid = document.getElementById('calendar-grid');
     const currentMonthYearElem = document.getElementById('currentMonthYear');
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
     const selectedDateDisplay = document.getElementById('selectedDateDisplay');
     const holidayInfoElem = document.getElementById('holiday-info');
+
     const restingEmployeesGrid = document.getElementById('resting-employees-grid');
     const noRestingMessage = restingEmployeesGrid.querySelector('.no-resting-message');
+
     const workingEmployeesGrid = document.getElementById('working-employees-grid');
     const noWorkingMessage = workingEmployeesGrid.querySelector('.no-working-message');
+
     const nightShiftEmployeesGrid = document.getElementById('night-shift-employees-grid');
     const noNightShiftMessage = nightShiftEmployeesGrid.querySelector('.no-night-shift-message');
+
     const extraEmergencySection = document.getElementById('extra-emergency-section');
     const extraEmergencyGrid = document.getElementById('extra-emergency-grid');
     const noExtraEmergencyMessage = extraEmergencyGrid.querySelector('.no-extra-emergency-message');
 
-    // NEW: Monthly Summary DOM Elements
     const summaryMonthYearElem = document.getElementById('summaryMonthYear');
     const monthlyDutyTableContainer = document.getElementById('monthly-duty-table-container');
 
-    // --- Modal DOM Elements ---
+    const monthlySummarySection = document.getElementById('monthly-summary-section');
+    const summaryPasswordInput = document.getElementById('summary-password-input');
+    const summaryUnlockBtn = document.getElementById('summary-unlock-btn');
+    const summaryErrorMessage = document.getElementById('summary-error-message');
+    const summaryLoginContainer = document.getElementById('summary-login-container');
+
     const employeeModal = document.getElementById('employeeModal');
     const closeButton = employeeModal.querySelector('.close-button');
     const modalEmployeePhoto = document.getElementById('modalEmployeePhoto');
@@ -31,17 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalEmployeeMobile = document.getElementById('modalEmployeeMobile');
     const callNowButton = document.getElementById('callNowButton');
 
-
-    // --- State Variables ---
     let currentDate = new Date();
-    let currentMonth = currentDate.getMonth(); // 0-indexed (0 = Jan, 11 = Dec)
+    let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
-    // NEW: Variable to hold the audio object
-    let specialAudio = null;
 
-    // --- Data ---
-
-    // Employee Data (Your 7 Linemen) - ADDED bloodGroup and mobileNumber
     const employees = [
         { id: 'lineman1', name: 'Harunur Rashid', designation: 'Line Technician', photo: './harun.png', shortName: 'Harun', bloodGroup: 'B+', mobileNumber: '01708658384' },
         { id: 'lineman2', name: 'Md. Habibur Rahman', designation: 'Lineman Grade-1', photo: './20250716_195749.jpg', shortName: 'Habib', bloodGroup: 'B+', mobileNumber: '01721514164' },
@@ -51,249 +54,234 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'lineman6', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './Rakib_profile.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
         { id: 'lineman7', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'Mahim', bloodGroup: 'O+', mobileNumber: '01770885997' },
         { id: 'lineman9', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
-        { id: 'lineman8', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './rofik.png', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' },
-
+        { id: 'lineman8', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './rofik.png', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' }
     ];
 
-    // Helper to get employee ID by short name
     function getEmployeeIdByShortName(shortName) {
         const employee = employees.find(emp => emp.shortName === shortName);
         return employee ? employee.id : null;
     }
 
-    // Bangladeshi Public Holidays for 2025 (based on common lists, verify with official government gazette)
-    // IMPORTANT: Islamic holidays (marked with *) are approximate and depend on moon sighting.
     const holidays = {
-        '2025-02-14': 'Shab-e-Barat (শবে বরাত)*',
-        '2025-02-21': 'Shaheed Day and International Mother Language Day (শহীদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস)',
-        '2025-03-26': 'Independence Day (স্বাধীনতা দিবস)',
-        '2025-03-28': 'Jumatul Bidah (জুমাতুল বিদা)*',
-        '2025-03-27': 'Shab-e-Qadr (শবে কদর)*',
-        '2025-03-31': 'Eid-ul-Fitr (ঈদ-উল-ফিতর)*', // Main day, typically followed by 2-3 more days
-        '2025-03-29': 'Eid-ul-Fitr Holiday (ঈদ-উল-ফিতরের ছুটি)*',
-        '2025-03-30': 'Eid-ul-Fitr Holiday (ঈদ-উল-ফিতরের ছুটি)*',
-        '2025-04-01': 'Eid-ul-Fitr Holiday (ঈদ-উল-ফিতরের ছুটি)*',
-        '2025-04-02': 'Eid-ul-Fitr Holiday (ঈদ-উল-ফিতরের ছুটি)*',
-        '2025-04-03': 'Eid-ul-Fitr Holiday (ঈদ-উল-ফিতরের ছুটি)*',
-        '2025-04-14': 'Pahela Baishakh (পহেলা বৈশাখ) (Bengali New Year)',
-        '2025-05-01': 'May Day (মে দিবস)',
-        '2025-05-11': 'Buddha Purnima (বুদ্ধ পূর্ণিমা)*',
-        '2025-06-07': 'Eid-ul-Azha (ঈদ-উল-আযহা)*', // Main day, typically followed by 2-3 more days
-        '2025-06-05': 'Eid-ul-Azha Holiday (ঈদ-উল-আযহার ছুটি)*',
-        '2025-06-06': 'Eid-ul-Azha Holiday (ঈদ-উল-আযহার ছুটি)*',
-        '2025-06-08': 'Eid-ul-Azha Holiday (ঈদ-উল-আযহার ছুটি)*',
-        '2025-06-09': 'Eid-ul-Azha Holiday (ঈদ-উল-আযহার ছুটি)*',
-        '2025-06-10': 'Eid-ul-Azha Holiday (ঈদ-উল-আযহার ছুটি)*',
-        '2025-07-06': 'Ashura (আশুরা)*',
-        '2025-08-15': 'National Mourning Day (জাতীয় শোক দিবস)',
-        '2025-08-16': 'Janmashtami (শুভ জন্মাষ্টমী)',
-        '2025-09-05': 'Eid-e-Miladunnabi (ঈদ-এ-মিলাদুন্নবী)*',
-        '2025-10-01': 'Durga Puja (Bijoya Dashami) (দুর্গাপূজা - বিজয়া দশমী)*', // Main day
-        '2025-10-02': 'Durga Puja (বিজয়া দশমী)*', // Often listed as 2nd day
-        '2025-12-16': 'Victory Day (বিজয় দিবস)',
-        '2025-12-25': 'Christmas Day (বড়দিন)',
+        '2026-02-14': 'Shab-e-Barat',
+        '2026-02-21': 'Shaheed Day and International Mother Language Day',
+        '2026-03-26': 'Independence Day',
+        '2026-03-28': 'Jumatul Bidah',
+        '2026-03-27': 'Shab-e-Qadr',
+        '2026-03-29': 'Eid-ul-Fitr Holiday',
+        '2026-03-30': 'Eid-ul-Fitr Holiday',
+        '2026-03-31': 'Eid-ul-Fitr',
+        '2026-04-01': 'Eid-ul-Fitr Holiday',
+        '2026-04-02': 'Eid-ul-Fitr Holiday',
+        '2026-04-03': 'Eid-ul-Fitr Holiday',
+        '2026-04-14': 'Pahela Baishakh',
+        '2026-05-01': 'May Day',
+        '2026-05-11': 'Buddha Purnima',
+        '2026-06-05': 'Eid-ul-Azha Holiday',
+        '2026-06-06': 'Eid-ul-Azha Holiday',
+        '2026-06-07': 'Eid-ul-Azha',
+        '2026-06-08': 'Eid-ul-Azha Holiday',
+        '2026-06-09': 'Eid-ul-Azha Holiday',
+        '2026-06-10': 'Eid-ul-Azha Holiday',
+        '2026-07-06': 'Ashura',
+        '2026-08-15': 'National Mourning Day',
+        '2026-08-16': 'Janmashtami',
+        '2026-09-05': 'Eid-e-Miladunnabi',
+        '2026-10-01': 'Durga Puja (Bijoya Dashami)',
+        '2026-10-02': 'Durga Puja',
+        '2026-12-16': 'Victory Day',
+        '2026-12-25': 'Christmas Day'
     };
 
-    // --- 4-Week Rotating Rest Day Patterns ---
-    // Day of week mapping: 0=Sunday, 1=Monday, ..., 6=Saturday
-    // Each object represents one week's pattern, mapping day_of_week_index to an array of employee IDs.
     const rotationPatterns = [
-        // Week 1 Pattern: 1st employee Sat, 2nd Sun, 3rd Mon, 4th Tue, 5th Wed, 6th Thu, 7th Fri
         {
-            6: ['lineman2', 'lineman3', 'lineman9'], // Saturday
+            5: ['lineman2', 'lineman7', 'lineman3'], // Friday
+            6: ['lineman1', 'lineman8', 'lineman9'], // Saturday
             0: ['lineman6'], // Sunday
             1: ['lineman4'], // Monday
             2: ['lineman5'], // Tuesday
-            3: ['lineman7'], // Wednesday
-            4: [], // Thursday
-            5: ['lineman1','lineman8'] // Friday
+            3: [], // Wednesday
+            4: []  // Thursday
         },
-        // Week 2 Pattern: 1st Sun, 2nd Mon, 3rd & 7th Sat, 4th Wed, 5th Thu, 6th Tue
         {
-            0: [], // Sunday
-            1: ['lineman6'], // Monday
-            5: ['lineman7','lineman8','lineman9'], // Friday
-            6: ['lineman1', 'lineman3','lineman2'], // Saturday
-            3: ['lineman4'], // Wednesday
-            4: [], // Thursday
-            2: ['lineman5'] // Tuesday
-            // Note: No one is explicitly listed for Friday in Week 2, based on your description.
+            5: ['lineman2', 'lineman8', 'lineman9'], // Friday
+            6: ['lineman4', 'lineman5', 'lineman6'], // Saturday
+            0: ['lineman1'], // Sunday
+            1: ['lineman7'], // Monday
+            2: ['lineman3'], // Tuesday
+            3: [], // Wednesday
+            4: []  // Thursday
         },
-        // Week 3 Pattern: 1st Mon, 2nd Tue, 3rd Wed, 4th Thu, 5th & 7th Sat, 6th Sun
         {
-            0: ['lineman6'], // Sunday
-            1: ['lineman4'], // Monday
-            2: ['lineman5'], // Tuesday
-            3: ['lineman9'], // Wednesday
-            4: [], // Thursday
-            5: ['lineman1', 'lineman8'], // Friday
-            6: ['lineman2','lineman3','lineman7'] // Saturday
-
-        },
-        //week 4
-        {
-            2: ['lineman5'], // Tuesday
-            3: ['lineman3'], // Wednesday
-            4: [], // Thursday
-            6: ['lineman1','lineman8','lineman9'], // Saturday
+            5: ['lineman1', 'lineman7', 'lineman3'], // Friday
+            6: ['lineman2', 'lineman8', 'lineman9'], // Saturday
             0: ['lineman4'], // Sunday
-            5: ['lineman2', 'lineman7'], // Friday
-            1: ['lineman6'] // Monday
+            1: ['lineman6'], // Monday
+            2: ['lineman5'], // Tuesday
+            3: [], // Wednesday
+            4: []  // Thursday
+        },
+        {
+            5: ['lineman1', 'lineman8', 'lineman9'], // Friday
+            6: ['lineman4', 'lineman5', 'lineman6'], // Saturday
+            0: ['lineman2'], // Sunday
+            1: ['lineman7'], // Monday
+            2: ['lineman3'], // Tuesday
+            3: [], // Wednesday
+            4: []  // Thursday
         }
     ];
 
-    // NEW: Night Shift Rotation Patterns
-    // The values are short names, we'll convert them to IDs in the generation function
-   const nightShiftPatterns = [
-    // Week 1
-    {
-        6: ['Harun', 'Rafiq'], // Saturday
-        0: ['Habib', 'Samsu'], // Sunday
-        1: ['Harun', 'Mahim'], // Monday
-        2: ['Samsu', 'Rakib'], // Tuesday
-        3: ['Shahinur', 'Mahim'], // Wednesday
-        4: ['Habib', 'Khairul'], // Thursday
-        5: ['Khairul', 'Iqram'] // Friday
-    },
-    // Week 2
-    {
-        6: ['Iqram', 'Samsu'], // Saturday
-        0: ['Shahinur', 'Habib'], // Sunday
-        1: ['Harun', 'Mahim'], // Monday
-        2: ['Iqram', 'Samsu'], // Tuesday
-        3: ['Khairul', 'Rafiq'], // Wednesday
-        4: ['Habib', 'Rakib'], // Thursday
-        5: ['Harun', 'Iqram'] // Friday
-    },
-    // Week 3
-    {
-        6: ['Iqram', 'Khairul'], // Saturday
-        0: ['Mahim', 'Habib'], // Sunday
-        1: ['Harun', 'Rafiq'], // Monday
-        2: ['Harun', 'Samsu'], // Tuesday
-        3: ['Rakib', 'Rafiq'], // Wednesday
-        4: ['Shahinur', 'Iqram'], // Thursday
-        5: ['Khairul', 'Rakib'] // Friday
-    },
-    // Week 4
-    {
-        6: ['Rakib', 'Mahim'], // Saturday
-        0: ['Harun', 'Samsu'], // Sunday
-        1: ['Habib', 'Rafiq'], // Monday
-        2: ['Shahinur', 'Rafiq'], // Tuesday
-        3: ['Iqram', 'Mahim'], // Wednesday
-        4: ['Rakib', 'Khairul'], // Thursday
-        5: ['Harun', 'Shahinur'] // Friday
-    }
-];
-
-    // NEW: Extra Emergency Group Rotation Patterns (only for Friday - day 5)
-    const extraEmergencyPatterns = [
-        { 5: ['Rakib', 'Khairul','Iqram'] },
-        { 5: ['Iqram', 'Harun','Habib'] },
-        { 5: ['Rakib', 'Khairul','Iqram'] },
-        { 5: ['Harun', 'Khairul', 'Shahinur'] }
+    // Night shift patterns base (will be adjusted for even-month 3rd Friday)
+    const nightShiftPatternsBase = [
+        {
+            5: ['Khairul', 'Rakib'],
+            6: ['Samsu', 'Iqram'],
+            0: ['Khairul', 'Iqram'],
+            1: ['Harun', 'Shahinur'],
+            2: ['Habib', 'Mahim'],
+            3: ['Shahinur', 'Samsu'],
+            4: ['Shahinur', 'Rafiq']
+        },
+        {
+            5: ['Harun', 'Mahim'],
+            6: ['Rakib', 'Khairul'],
+            0: ['Rafiq', 'Mahim'],
+            1: ['Habib', 'Shahinur'],
+            2: ['Harun', 'Iqram'],
+            3: ['Habib', 'Samsu'],
+            4: ['Rakib', 'Samsu']
+        },
+        {
+            5: ['Iqram', 'Rafiq'],   // 3rd week Friday – will be swapped in even months
+            6: ['Khairul', 'Rakib'],
+            0: ['Harun', 'Mahim'],
+            1: ['Rafiq', 'Shahinur'],
+            2: ['Habib', 'Iqram'],
+            3: ['Rakib', 'Samsu'],
+            4: ['Harun', 'Khairul']
+        },
+        {
+            5: ['Habib', 'Shahinur'],
+            6: ['Iqram', 'Khairul'],
+            0: ['Rakib', 'Rafiq'],
+            1: ['Harun', 'Samsu'],
+            2: ['Mahim', 'Shahinur'],
+            3: ['Habib', 'Rafiq'],
+            4: ['Mahim', 'Samsu']
+        }
     ];
 
+    // Base extra emergency patterns (will be adjusted for even months)
+    const extraEmergencyPatternsBase = [
+        { 5: ['Khairul', 'Rakib'] },
+        { 5: ['Harun', 'Mahim'] },
+        { 5: ['Iqram', 'Rafiq'] },   // 3rd week – swapped in even months
+        { 5: ['Habib', 'Shahinur'] }
+    ];
 
+    const ROTATION_START = '2026-05-01'; // Friday
 
-    function generateRotatingRoutine(employeesList, patterns, rotationStartDateStr, numMonthsToGenerate = 12, isShortNameConversionNeeded = false) {
+    function generateRotatingRoutine(patterns, rotationStartDateStr, numMonthsToGenerate = 12, isShortNameConversionNeeded = false) {
         const routine = {};
-        const rotationStartDate = new Date(rotationStartDateStr); // e.g., '2025-07-19' (Saturday)
+        const rotationStartDate = new Date(rotationStartDateStr);
 
         const today = new Date();
-        // Generate routine for previous month, current month, and next 'numMonthsToGenerate' months
         const startGenDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
         const endGenDate = new Date(today.getFullYear(), today.getMonth() + numMonthsToGenerate, 0);
 
-        // Find the first Saturday that is on or after the rotationStartDate.
-        // This acts as the definitive start of "Week 1" for the rotation cycle.
-        let firstCycleSaturday = new Date(rotationStartDate);
-        firstCycleSaturday.setHours(0, 0, 0, 0); // Normalize time for accurate comparisons
-        // Ensure firstCycleSaturday is actually a Saturday (I changed it to Sunday)
-        while (firstCycleSaturday.getDay() !== 0) { // 6 is Saturday(I changed it to Sunday)
-            firstCycleSaturday.setDate(firstCycleSaturday.getDate() + 1);
-        }
+        const firstCycleFriday = new Date(rotationStartDate);
+        firstCycleFriday.setHours(0, 0, 0, 0);
 
-        let currentDay = new Date(startGenDate);
-        currentDay.setHours(0, 0, 0, 0); // Normalize time for accurate comparisons
+        const currentDay = new Date(startGenDate);
+        currentDay.setHours(0, 0, 0, 0);
 
         while (currentDay <= endGenDate) {
             const fullDate = `${currentDay.getFullYear()}-${String(currentDay.getMonth() + 1).padStart(2, '0')}-${String(currentDay.getDate()).padStart(2, '0')}`;
-            const dayOfWeek = currentDay.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+            const dayOfWeek = currentDay.getDay();
 
-            // Calculate total days passed since the start of the first 4-week cycle's Week 1 Saturday
-            const daysSinceCycleStart = Math.floor((currentDay.getTime() - firstCycleSaturday.getTime()) / (1000 * 60 * 60 * 24));
-
-            // Only generate routine for dates on or after the rotation start date
-            if (daysSinceCycleStart >= 0) {
-                // Calculate which of the 4 patterns to use (0, 1, 2, or 3)
-                // A full cycle is 4 weeks * 7 days/week = 28 days.
-                // Divide total days by 7 to get the overall week number from the start of the cycle.
-                const overallWeekNumber = Math.floor(daysSinceCycleStart / 7);
-                const patternIndex = overallWeekNumber % patterns.length; // This will cycle through 0, 1, 2, 3
-
-                // Get the employees for this day of the week in the current pattern
-                let employeeNamesOrIds = patterns[patternIndex][dayOfWeek] || [];
+            if (currentDay >= firstCycleFriday) {
+                const daysSinceFridayStart = Math.floor((currentDay.getTime() - firstCycleFriday.getTime()) / (1000 * 60 * 60 * 24));
+                const overallWeekNumber = Math.floor(daysSinceFridayStart / 7);
+                const patternIndex = overallWeekNumber % patterns.length;
+                const employeeNamesOrIds = patterns[patternIndex][dayOfWeek] || [];
 
                 if (employeeNamesOrIds.length > 0) {
-                    // Convert short names to full IDs if 'isShortNameConversionNeeded' is true
-                    const employeeIds = isShortNameConversionNeeded ? employeeNamesOrIds.map(getEmployeeIdByShortName).filter(id => id !== null) : employeeNamesOrIds;
+                    const employeeIds = isShortNameConversionNeeded
+                        ? employeeNamesOrIds.map(getEmployeeIdByShortName).filter(Boolean)
+                        : employeeNamesOrIds;
+
                     if (employeeIds.length > 0) {
                         routine[fullDate] = employeeIds;
                     }
                 }
             }
 
-            currentDay.setDate(currentDay.getDate() + 1); // Move to next day
+            currentDay.setDate(currentDay.getDate() + 1);
         }
+
         return routine;
     }
 
-    // Generate the rest day routine. '2025-08-02' is a Saturday, chosen as the start of "Week 1" for your rotation.
-    const restDayRoutine = generateRotatingRoutine(employees, rotationPatterns, '2026-02-08', 12, false);
+    const restDayRoutine = generateRotatingRoutine(rotationPatterns, ROTATION_START, 12, false);
 
-    // Generate the night shift routine using the same logic but different patterns
-    const nightShiftRoutine = generateRotatingRoutine(employees, nightShiftPatterns, '2026-02-08', 12, true);
+    // Generate base night shift routine, then adjust even-month 3rd Friday
+    const nightShiftRoutine = generateRotatingRoutine(nightShiftPatternsBase, ROTATION_START, 12, true);
 
-    // NEW: Generate the Extra Emergency Group routine
-    const extraEmergencyRoutine = generateRotatingRoutine(employees, extraEmergencyPatterns, '2026-02-08', 12, true);
+    // Generate base extra emergency routine, then adjust even-month Friday
+    const extraEmergencyRoutine = generateRotatingRoutine(extraEmergencyPatternsBase, ROTATION_START, 12, true);
 
+    const rafiqId = getEmployeeIdByShortName('Rafiq');
+    const samsuId = getEmployeeIdByShortName('Samsu');
 
-    // --- Functions ---
+    // Adjust both routines for even months: replace Rafiq with Samsu on Friday
+    for (const dateStr in nightShiftRoutine) {
+        const d = new Date(dateStr);
+        if (d.getDay() === 5 && (d.getMonth() + 1) % 2 === 0) { // Friday & even month
+            const ids = nightShiftRoutine[dateStr];
+            if (ids.includes(rafiqId)) {
+                nightShiftRoutine[dateStr] = ids.map(id => id === rafiqId ? samsuId : id);
+            }
+        }
+    }
 
-    /**
-     * Renders employee cards into a specified grid container.
-     * @param {HTMLElement} container - The DOM element to append cards to.
-     * @param {Array<Object>} employeeList - An array of employee objects to display.
-     * @param {HTMLElement} noMessageElement - The specific 'no message' element for this grid. Can be null.
-     */
+    for (const dateStr in extraEmergencyRoutine) {
+        const d = new Date(dateStr);
+        if (d.getDay() === 5 && (d.getMonth() + 1) % 2 === 0) {
+            const ids = extraEmergencyRoutine[dateStr];
+            if (ids.includes(rafiqId)) {
+                extraEmergencyRoutine[dateStr] = ids.map(id => id === rafiqId ? samsuId : id);
+            }
+        }
+    }
+
+    // --- The rest of the code (render, calendar, modal, long‑press) is identical ---
     function renderEmployeeCards(container, employeeList, noMessageElement) {
-        container.innerHTML = ''; // Clear previous cards
+        container.innerHTML = '';
 
         if (employeeList.length === 0) {
             if (noMessageElement) {
-                noMessageElement.style.display = 'block'; // Show if no employees
+                noMessageElement.style.display = 'block';
                 container.appendChild(noMessageElement);
             }
-            return; // Exit if no employees to render
-        } else {
-            if (noMessageElement) {
-                noMessageElement.style.display = 'none'; // Hide if employees are present
-            }
+            return;
+        }
+
+        if (noMessageElement) {
+            noMessageElement.style.display = 'none';
         }
 
         employeeList.forEach(employee => {
             const card = document.createElement('div');
             card.classList.add('employee-card');
-            card.dataset.employeeId = employee.id; // Store employee ID for modal
+            card.dataset.employeeId = employee.id;
 
             const img = document.createElement('img');
             img.src = employee.photo;
             img.alt = employee.name;
-            img.onerror = function() { // Fallback for broken images
-                this.onerror = null; // Prevent infinite loops
-                this.src = `https://placehold.co/150x150/CCCCCC/333333?text=${employee.shortName || employee.name.split(' ')[0]}`; // Use shortName for fallback text
+            img.onerror = function () {
+                this.onerror = null;
+                this.src = `https://placehold.co/150x150/CCCCCC/333333?text=${employee.shortName || employee.name.split(' ')[0]}`;
             };
 
             const name = document.createElement('h3');
@@ -307,61 +295,40 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(designation);
             container.appendChild(card);
 
-            // Add click listener to open modal for each card
-            card.addEventListener('click', () => {
-                openEmployeeModal(employee.id);
-            });
+            card.addEventListener('click', () => openEmployeeModal(employee.id));
         });
     }
-    
-    // NEW FUNCTION: Calculate and Render Monthly Summary (List Dates)
-    /**
-     * Calculates the rest and night shift dates for every employee in the current month
-     * and renders the summary table.
-     */
+
     function calculateAndRenderMonthlySummary() {
-        // Clear previous content
         monthlyDutyTableContainer.innerHTML = '';
 
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
         ];
-        
-        // Update the header
+
         summaryMonthYearElem.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
         const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-        // 1. Aggregate duty dates by employee
         const summary = employees.reduce((acc, emp) => {
             acc[emp.id] = { name: emp.name, restDays: [], nightShifts: [] };
             return acc;
         }, {});
 
-        // Iterate through all days in the current month
         for (let day = 1; day <= daysInMonth; day++) {
             const fullDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            // Use day of month padded to two digits (e.g., '01', '15')
-            const dateOfMonth = String(day).padStart(2, '0');
+            const dayText = String(day).padStart(2, '0');
 
-            // Check for Rest Day
-            const restingEmployeeIds = restDayRoutine[fullDate] || [];
-            restingEmployeeIds.forEach(id => {
-                if (summary[id]) {
-                    summary[id].restDays.push(dateOfMonth);
-                }
+            (restDayRoutine[fullDate] || []).forEach(id => {
+                if (summary[id]) summary[id].restDays.push(dayText);
             });
 
-            // Check for Night Shift
-            const nightShiftEmployeeIds = nightShiftRoutine[fullDate] || [];
-            nightShiftEmployeeIds.forEach(id => {
-                if (summary[id]) {
-                    summary[id].nightShifts.push(dateOfMonth);
-                }
+            (nightShiftRoutine[fullDate] || []).forEach(id => {
+                if (summary[id]) summary[id].nightShifts.push(dayText);
             });
         }
 
-        // 2. Render the table
         let tableHTML = `
             <table class="duty-summary-table">
                 <thead>
@@ -375,43 +342,31 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         Object.values(summary).forEach(empData => {
-            // Join dates with comma and space
-            const restDates = empData.restDays.length > 0 ? empData.restDays.join(', ') : '—';
-            const nightShiftDates = empData.nightShifts.length > 0 ? empData.nightShifts.join(', ') : '—';
-
             tableHTML += `
                 <tr>
                     <td>${empData.name}</td>
-                    <td>${restDates}</td>
-                    <td>${nightShiftDates}</td>
+                    <td>${empData.restDays.length ? empData.restDays.join(', ') : '-'}</td>
+                    <td>${empData.nightShifts.length ? empData.nightShifts.join(', ') : '-'}</td>
                 </tr>
             `;
         });
 
-        tableHTML += `
-                </tbody>
-            </table>
-        `;
-
+        tableHTML += `</tbody></table>`;
         monthlyDutyTableContainer.innerHTML = tableHTML;
     }
 
-
-    /**
-     * Renders the calendar grid for the current month and year.
-     */
     function renderCalendar() {
-        calendarGrid.innerHTML = ''; // Clear previous calendar days
+        calendarGrid.innerHTML = '';
 
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
         ];
-        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-        // Update the current month/year display
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
         currentMonthYearElem.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
-        // Add day names (Sun, Mon, Tue...) to the calendar grid
         dayNames.forEach(day => {
             const dayNameDiv = document.createElement('div');
             dayNameDiv.classList.add('day-name');
@@ -419,74 +374,48 @@ document.addEventListener('DOMContentLoaded', () => {
             calendarGrid.appendChild(dayNameDiv);
         });
 
-        // Determine the first day of the month (0 = Sunday, 1 = Monday, etc.)
         const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-        // Determine the number of days in the current month
         const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-        // Add blank divs for the days before the first day of the month
         for (let i = 0; i < firstDayOfMonth; i++) {
             const blankDiv = document.createElement('div');
-            blankDiv.classList.add('blank'); // Add 'blank' class for styling
+            blankDiv.classList.add('blank');
             calendarGrid.appendChild(blankDiv);
         }
 
-        // Add the actual days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             const dayDiv = document.createElement('div');
             dayDiv.textContent = day;
 
-            // Format date as YYYY-MM-DD for easy lookup in events/holidays objects
             const fullDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            dayDiv.dataset.date = fullDate; // Store the full date as a data attribute
+            dayDiv.dataset.date = fullDate;
 
-            // Create a Date object for the current day being processed
             const currentDayDate = new Date(currentYear, currentMonth, day);
-            const dayOfWeek = currentDayDate.getDay(); // Get the day of the week (0-6)
+            const dayOfWeek = currentDayDate.getDay();
 
-            // 1. Check for 'today's date
             const today = new Date();
             if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
                 dayDiv.classList.add('today');
             }
 
-            // 2. Treat all Fridays and Saturdays as weekend holidays (Bangladesh context)
-            if (dayOfWeek === 5) { // Friday (5)
-                dayDiv.classList.add('friday');
-            }
-            if (dayOfWeek === 6) { // Saturday (6)
-                dayDiv.classList.add('saturday');
-            }
+            if (dayOfWeek === 5) dayDiv.classList.add('friday');
+            if (dayOfWeek === 6) dayDiv.classList.add('saturday');
+            if (holidays[fullDate]) dayDiv.classList.add('holiday');
 
-            // 3. Apply holiday class for declared specific holidays
-            if (holidays[fullDate]) {
-                dayDiv.classList.add('holiday');
-            }
-
-
-            // Add click event listener to each day
             dayDiv.addEventListener('click', () => {
-                // Remove 'selected-day' class from any previously selected day
                 const previouslySelected = calendarGrid.querySelector('.selected-day');
-                if (previouslySelected) {
-                    previouslySelected.classList.remove('selected-day');
-                }
-                // Add 'selected-day' class to the clicked day
+                if (previouslySelected) previouslySelected.classList.remove('selected-day');
                 dayDiv.classList.add('selected-day');
-
-                // Update info for the selected date
                 displayDateInfo(fullDate);
             });
-            calendarGrid.appendChild(dayDiv); // Add the day div to the calendar grid
+
+            calendarGrid.appendChild(dayDiv);
         }
 
-        // Initially select today's date if it's in the current month, otherwise select the 1st
         const today = new Date();
         const todayFullDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
         let initialSelectedDate = todayFullDate;
-        // If current month is not today's month, or current year is not today's year,
-        // select the first day of the current calendar month.
         if (currentMonth !== today.getMonth() || currentYear !== today.getFullYear()) {
             initialSelectedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-01`;
         }
@@ -496,158 +425,168 @@ document.addEventListener('DOMContentLoaded', () => {
             initialSelectedDayDiv.classList.add('selected-day');
             displayDateInfo(initialSelectedDate);
         } else {
-            // Fallback: If for some reason the calculated initial date isn't found (shouldn't happen)
-            // Just display info for current date, but no day will be marked as selected.
             displayDateInfo(initialSelectedDate);
         }
-        
-        // NEW: Calculate and render the monthly summary after the calendar is fully set up
+
         calculateAndRenderMonthlySummary();
     }
 
-    /**
-     * Displays holiday information, resting employees, working employees, and night shift employees for a given date.
-     * @param {string} date - The date in YYYY-MM-DD format.
-     */
     function displayDateInfo(date) {
         selectedDateDisplay.textContent = date;
 
-        // --- Holiday Info ---
-        const holidayName = holidays[date];
         const dateObj = new Date(date);
-        const dayOfWeek = dateObj.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+        const dayOfWeek = dateObj.getDay();
 
-        let holidayDescription = '';
         if (holidays[date]) {
-            holidayDescription = `Public Holiday: ${holidays[date]}`;
+            holidayInfoElem.textContent = `Public Holiday: ${holidays[date]}`;
         } else if (dayOfWeek === 5 || dayOfWeek === 6) {
-            holidayDescription = 'Weekend';
+            holidayInfoElem.textContent = 'Weekend';
         } else {
-            holidayDescription = 'No public holiday on this date.';
+            holidayInfoElem.textContent = 'No public holiday on this date.';
         }
 
-        holidayInfoElem.textContent = holidayDescription;
-        holidayInfoElem.classList.toggle('holiday-item-text', holidayName || dayOfWeek === 5 || dayOfWeek === 6);
-
-
-        // --- Resting Employees Info ---
         const restingEmployeeIds = restDayRoutine[date] || [];
         const restingEmployees = employees.filter(emp => restingEmployeeIds.includes(emp.id));
         renderEmployeeCards(restingEmployeesGrid, restingEmployees, noRestingMessage);
 
-        // --- Night Shift Employees Info ---
         const nightShiftEmployeeIds = nightShiftRoutine[date] || [];
         const nightShiftEmployees = employees.filter(emp => nightShiftEmployeeIds.includes(emp.id));
         renderEmployeeCards(nightShiftEmployeesGrid, nightShiftEmployees, noNightShiftMessage);
 
-        // NEW: --- Extra Emergency Group Info (Friday Only) ---
         const extraEmergencyEmployeeIds = extraEmergencyRoutine[date] || [];
         const extraEmergencyEmployees = employees.filter(emp => extraEmergencyEmployeeIds.includes(emp.id));
 
-        if (dayOfWeek === 5) { // If it's Friday
-            extraEmergencySection.style.display = 'block'; // Show the section
+        if (dayOfWeek === 5) {
+            extraEmergencySection.style.display = 'block';
             renderEmployeeCards(extraEmergencyGrid, extraEmergencyEmployees, noExtraEmergencyMessage);
         } else {
-            extraEmergencySection.style.display = 'none'; // Hide the section on other days
-            extraEmergencyGrid.innerHTML = ''; // Clear content when hidden
-            extraEmergencyGrid.appendChild(noExtraEmergencyMessage); // Add back the message for consistency
+            extraEmergencySection.style.display = 'none';
+            extraEmergencyGrid.innerHTML = '';
+            extraEmergencyGrid.appendChild(noExtraEmergencyMessage);
         }
 
-        // --- Working Employees Info ---
-        // CORRECTED LOGIC: Only filter out resting employees.
-        const workingEmployees = employees.filter(emp => !restingEmployeeIds.includes(emp.id));
+        const workingEmployees = employees.filter(emp => {
+            const isResting = restingEmployeeIds.includes(emp.id);
+            const isFridayEmergency = dayOfWeek === 5 && extraEmergencyEmployeeIds.includes(emp.id);
+            return !isResting && !isFridayEmergency;
+        });
+
         renderEmployeeCards(workingEmployeesGrid, workingEmployees, noWorkingMessage);
     }
 
-    /**
-     * Opens the employee details modal with the specified employee's information.
-     * @param {string} employeeId - The ID of the employee to display.
-     */
     function openEmployeeModal(employeeId) {
         const employee = employees.find(emp => emp.id === employeeId);
-        if (employee) {
-             modalEmployeePhoto.src = employee.photo;
-            modalEmployeePhoto.alt = employee.name;
-            // Fallback for broken images in modal
-            modalEmployeePhoto.onerror = function() {
-                this.onerror = null;
-                this.src = `https://placehold.co/150x150/CCCCCC/333333?text=${employee.shortName || employee.name.split(' ')[0]}`;
-            };
-            modalEmployeeName.textContent = employee.name;
-            modalEmployeeDesignation.textContent = employee.designation;
-            modalEmployeeBloodGroup.textContent = employee.bloodGroup;
-            modalEmployeeMobile.textContent = employee.mobileNumber;
-            callNowButton.href = `tel:${employee.mobileNumber}`; // Set the phone call link
+        if (!employee) return;
 
-            employeeModal.style.display = 'flex'; // Show the modal overlay
-        } else {
-            console.error('Employee not found:', employeeId);
-        }
+        modalEmployeePhoto.src = employee.photo;
+        modalEmployeePhoto.alt = employee.name;
+        modalEmployeePhoto.onerror = function () {
+            this.onerror = null;
+            this.src = `https://placehold.co/150x150/CCCCCC/333333?text=${employee.shortName || employee.name.split(' ')[0]}`;
+        };
+
+        modalEmployeeName.textContent = employee.name;
+        modalEmployeeDesignation.textContent = employee.designation;
+        modalEmployeeBloodGroup.textContent = employee.bloodGroup;
+        modalEmployeeMobile.textContent = employee.mobileNumber;
+        callNowButton.href = `tel:${employee.mobileNumber}`;
+
+        employeeModal.style.display = 'flex';
     }
 
-    /**
-     * Closes the employee details modal.
-     */
     function closeEmployeeModal() {
-        // NEW: Stop the special audio if it's playing
-        if (specialAudio) {
-            specialAudio.pause();
-            specialAudio.currentTime = 0;
-        }
-        employeeModal.style.display = 'none'; // Hide the modal overlay
+        employeeModal.style.display = 'none';
     }
 
-    // --- Event Listeners ---
+    // Hide old password form & set up long-press on AGM signature
+    if (summaryLoginContainer) {
+        summaryLoginContainer.style.display = 'none';
+    }
+    if (summaryErrorMessage) {
+        summaryErrorMessage.style.display = 'none';
+    }
 
-    // Event listener for "Previous Month" button
-    prevMonthBtn.addEventListener('click', () => {
-        currentMonth--;
-        if (currentMonth < 0) { // If month goes below January, go to previous year
-            currentMonth = 11; // Set to December
-            currentYear--;
+    const correctPassword = '104035';
+    function attemptUnlock(password) {
+        if (password === correctPassword) {
+            monthlySummarySection.classList.remove('secret-section');
+            return true;
         }
-        renderCalendar(); // Re-render the calendar
-    });
+        return false;
+    }
 
-    // Event listener for "Next Month" button
-    nextMonthBtn.addEventListener('click', () => {
-        currentMonth++;
-        if (currentMonth > 11) { // If month goes above December, go to next year
-            currentMonth = 0; // Set to January
-            currentYear++;
-        }
-        renderCalendar(); // Re-render the calendar
-    });
-
-    // Event listeners for modal close
-    closeButton.addEventListener('click', closeEmployeeModal);
-    employeeModal.addEventListener('click', (event) => {
-        // Close modal if clicked outside the content (on the overlay)
-        if (event.target === employeeModal) {
-            closeEmployeeModal();
-        }
-    });
-
-    // --- Initial Render ---
-    // Render all employee profiles initially in the "Our Linemen Team" section
-    renderEmployeeCards(employeeProfilesGrid, employees, null); // No "no message" for the main profile grid
-
-    // Initial render of the calendar and display info for today
-    renderCalendar();
-});
-
-// Show the hidden Monthly summary
-        function checkPassword() {
-            // 1. Set your desired password here
-            const correctPassword = "326062"; 
-
-            // 2. Get the user's input
-            const userInput = document.getElementById("password-input").value;
-
-            // 3. Check if the input matches
-            if (userInput === correctPassword) {
-                // Show the secret section
-                document.getElementById("monthly-summary-section").classList.remove("secret-section");
-                
+    function showPasswordPrompt() {
+        const password = prompt('Long press detected. Enter password to view Monthly Summary:');
+        if (password !== null) {
+            const success = attemptUnlock(password.trim());
+            if (!success) {
+                alert('Incorrect password. Monthly summary remains hidden.');
             }
         }
+    }
+
+    const agmSignatureImg = document.querySelector('.signature-card.right .signature-image');
+    let pressTimer = null;
+
+    function startPress(e) {
+        e.preventDefault();
+        pressTimer = setTimeout(() => {
+            showPasswordPrompt();
+            pressTimer = null;
+        }, 5000);
+    }
+
+    function cancelPress() {
+        if (pressTimer) {
+            clearTimeout(pressTimer);
+            pressTimer = null;
+        }
+    }
+
+    if (agmSignatureImg) {
+        agmSignatureImg.addEventListener('pointerdown', startPress);
+        agmSignatureImg.addEventListener('pointerup', cancelPress);
+        agmSignatureImg.addEventListener('pointerleave', cancelPress);
+        agmSignatureImg.addEventListener('pointercancel', cancelPress);
+        agmSignatureImg.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
+
+    if (summaryUnlockBtn) {
+        summaryUnlockBtn.style.display = 'none';
+    }
+    if (summaryPasswordInput) {
+        summaryPasswordInput.style.display = 'none';
+    }
+
+    prevMonthBtn.addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    });
+
+    nextMonthBtn.addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar();
+    });
+
+    closeButton.addEventListener('click', closeEmployeeModal);
+    employeeModal.addEventListener('click', (event) => {
+        if (event.target === employeeModal) closeEmployeeModal();
+    });
+
+    toggleLinemenBtn.addEventListener('click', () => {
+        const isCollapsed = employeeProfilesContent.classList.toggle('collapsed');
+        toggleLinemenBtn.textContent = isCollapsed ? 'Show All Linemen' : 'Hide All Linemen';
+        toggleLinemenBtn.setAttribute('aria-expanded', String(!isCollapsed));
+    });
+
+    renderEmployeeCards(employeeProfilesGrid, employees, null);
+    renderCalendar();
+});
