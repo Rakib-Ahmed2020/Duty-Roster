@@ -1,21 +1,13 @@
-/* Basic Resets & Font */
 :root {
-    --primary-blue: #007bff;
-    --dark-blue: #0056b3;
-    --light-gray: #f8f9fa;
-    --medium-gray: #e9ecef;
-    --dark-gray: #343a40;
-    --green-today: #d4edda;
-    --green-today-text: #155724;
-    --red-holiday: #ffebee;
-    --red-holiday-text: #d32f2f;
-    --red-holiday-border: #ef9a9a;
-    --weekend-blue: #e0f2f7;
-    --weekend-blue-text: #006064;
-    --weekend-blue-border: #b2ebf2;
-    --selected-day-bg: #007bff;
-    --selected-day-text: white;
-    --event-dot-color: #ffc107;
+    --ink-1: #102445;
+    --ink-2: #33527f;
+    --brand-1: #0f6fff;
+    --brand-2: #0a4db0;
+    --danger-1: #dc3545;
+    --line-1: #d8e5ff;
+    --shadow-1: 0 16px 40px rgba(17, 52, 103, 0.12);
+    --radius-xl: 18px;
+    --radius-lg: 14px;
 }
 
 * {
@@ -25,75 +17,186 @@
 }
 
 body {
-    background-image: url("./body.jpg");
-    background-size: contain;
-    font-family: 'Inter', sans-serif;
-    background-color: var(--light-gray);
-    color: var(--dark-gray);
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
+    font-family: 'Outfit', sans-serif;
+    color: var(--ink-1);
+    background-image: linear-gradient(rgba(244, 250, 255, 0.86), rgba(233, 243, 255, 0.9)), url('./body.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     min-height: 100vh;
+    line-height: 1.5;
+    padding-bottom: 74px;
 }
 
-/* Header & Footer */
-.app-header, .app-footer {
-    background-image: url("./head.jpg");
-    background-size: contain;
-    background-color: var(--dark-gray);
-    color: navy;
+.bg-decor {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 9% 14%, rgba(32, 130, 255, 0.2) 0%, transparent 32%),
+        radial-gradient(circle at 91% 17%, rgba(11, 143, 98, 0.16) 0%, transparent 24%);
+}
+
+.app-header {
+    padding: 16px 12px 8px;
+}
+
+.header-inner {
+    position: relative;
+    overflow: hidden;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 22px;
+    padding: 22px 16px;
     text-align: center;
-    padding: 1.2em 0;
-    width: 100%;
-}
-#headline{
-    color: #00008B;
-}
-#head{
-    font-weight: bold;
-    background-color: white;
-}
-.app-header h1 {
-    margin-bottom: 0.2em;
-    font-size: 2em;
+    background-image: linear-gradient(110deg, rgba(5, 28, 66, 0.86), rgba(9, 78, 173, 0.6)), url('./head.jpg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: var(--shadow-1);
+    border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
-.app-footer p {
-    font-size: 0.9em;
-    opacity: 0.8;
+.header-inner::before {
+    content: '';
+    position: absolute;
+    inset: -40% -30%;
+    background: linear-gradient(105deg, transparent 43%, rgba(255, 255, 255, 0.26) 50%, transparent 57%);
+    animation: header-sheen 6s linear infinite;
 }
 
-/* Main Content Wrapper for Layout */
+@keyframes header-sheen {
+    0% { transform: translateX(-45%); }
+    100% { transform: translateX(45%); }
+}
+
+#headline,
+#head {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+}
+
+#headline {
+    font-size: clamp(1.5rem, 5.5vw, 2.45rem);
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+#head {
+    margin-top: 3px;
+    font-weight: 500;
+}
+
 .main-content-wrapper {
-    display: flex;
-    flex-direction: column; /* Stacks sections vertically on mobile */
-    gap: 25px; /* Space between sections */
-    padding: 20px;
-    max-width: 1200px; /* Max width for the whole content */
-    margin: 25px auto;
-    flex-grow: 1; /* Allows it to take up available space */
+    max-width: 1100px;
+    margin: 10px auto 0;
+    padding: 0 10px 20px;
+}
+
+.dashboard-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
 }
 
 .card-section {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(216, 229, 255, 0.92);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 8px 24px rgba(15, 56, 120, 0.08);
+    padding: 14px;
 }
 
-.card-section h2 h3{
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--primary-blue);
-    font-size: 1.8em;
+.card-section h2 {
+    font-size: clamp(1.08rem, 4.6vw, 1.38rem);
+    color: #143667;
+    margin-bottom: 10px;
 }
 
-/* Employee Grid Styles */
+.section-header-with-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+#employee-profiles-content {
+    margin-top: 8px;
+    overflow: hidden;
+    max-height: 999px;
+    opacity: 1;
+    transition: max-height 280ms ease, opacity 280ms ease;
+}
+
+#employee-profiles-content.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(120deg, var(--brand-1), var(--brand-2));
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.05);
+}
+
+.ghost-btn {
+    background: #fff;
+    color: #0f4ea9;
+    border: 1px solid #bcd7ff;
+}
+
+#summary-login-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#summary-password-input {
+    flex: 1;
+    min-width: 210px;
+    border: 1px solid var(--line-1);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+}
+
+#summary-password-input:focus {
+    outline: none;
+    border-color: #74b0ff;
+    box-shadow: 0 0 0 3px rgba(15, 111, 255, 0.14);
+}
+
+#summary-error-message {
+    margin-top: 8px;
+    color: var(--danger-1);
+    display: none;
+    font-size: 0.92rem;
+}
+
+.muted-text {
+    color: var(--ink-2);
+    margin-bottom: 9px;
+}
+
+.secret-section {
+    display: none;
+}
+
 .employee-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive grid for employees */
-    gap: 15px;
-    justify-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
 }
 
 .employee-card {
@@ -101,740 +204,328 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: var(--light-gray);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%; /* Ensures cards fill grid space */
-    max-width: 150px; /* Max width for individual cards */
-    cursor: pointer; /* Indicate clickability */
-}
-
-.employee-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, #ffffff, #f5f9ff);
+    border: 1px solid #d9e8ff;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .employee-card img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%; /* Circular image */
-    object-fit: cover; /* Ensures image covers the area */
-    border: 3px solid var(--primary-blue);
-    margin-bottom: 10px;
-    transition: border-color 0.3s ease, transform 0.3s ease; /* Dynamic CSS for photo */
-}
-
-.employee-card:hover img {
-    border-color: var(--dark-blue); /* Change border color on hover */
-    transform: scale(1.05); /* Slightly enlarge photo on hover */
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #8bc0ff;
+    margin-bottom: 8px;
 }
 
 .employee-card h3 {
-    font-size: 1.1em;
-    margin-bottom: 3px;
-    color: var(--dark-gray);
+    font-size: 0.86rem;
+    color: #193b6d;
 }
 
 .employee-card p {
-    font-size: 0.85em;
-    color: #6c757d;
-}
-
-/* Calendar Section */
-#calendar-section {
-    flex-grow: 1; /* Allow calendar to take up more space */
+    font-size: 0.76rem;
+    color: #4b6b98;
 }
 
 #calendar-controls {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    margin-bottom: 20px;
-    padding: 0 10px;
-}
-
-#calendar-controls button {
-    background-color: var(--primary-blue);
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600;
-    transition: background-color 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
-}
-
-#calendar-controls button:hover {
-    background-color: var(--dark-blue);
-    transform: translateY(-1px);
-}
-
-#calendar-controls button:active {
-    transform: translateY(0);
-    box-shadow: none;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 #currentMonthYear {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: var(--dark-gray);
+    font-size: 1.05rem;
+    color: #163b71;
     text-align: center;
-    flex-grow: 1;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    width: 100%;
+    gap: 4px;
 }
 
-.calendar-grid > div { /* General style for all day cells */
-    padding: 12px 5px;
-    border: 1px solid #e0e0e0;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    position: relative;
-    overflow: hidden;
-    font-weight: 500;
-    font-size: 1.1em;
-    color: #495057;
-    background-color: white;
+.calendar-grid > div {
+    border: 1px solid #d7e5ff;
+    border-radius: 8px;
+    min-height: 38px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: 50px;
+    justify-content: center;
+    background: #fff;
+    color: #264a7d;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.86rem;
 }
 
 .calendar-grid .day-name {
+    background: #eaf2ff;
     font-weight: 700;
-    text-align: center;
-    padding: 10px 0;
-    color: #555;
-    background-color: var(--medium-gray);
-    border-bottom: 1px solid #dee2e6;
-    border-radius: 4px;
+    color: #1b447e;
+    cursor: default;
+    font-size: 0.8rem;
+}
+
+.calendar-grid .blank {
+    background: rgba(244, 248, 255, 0.8);
+    border-style: dashed;
     cursor: default;
 }
 
-.calendar-grid > div.blank {
-    background-color: var(--light-gray);
-    border: 1px dashed #e9ecef;
-    cursor: default;
-    opacity: 0.7;
-}
-
-.calendar-grid > div.blank:hover {
-    transform: none;
-    box-shadow: none;
-}
-
-.calendar-grid > div:hover:not(.day-name):not(.blank):not(.selected-day) {
-    background-color: #e2f0fe;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,123,255,0.2);
-}
-
-/* Today's Date */
 .today {
-    background-color: var(--green-today);
-    font-weight: bold;
-    border: 1px solid #28a745;
-    color: var(--green-today-text);
-    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
-}
-.today:hover:not(.selected-day) {
-    background-color: #c3e6cb;
+    background: #e6fff1;
+    border-color: #95e5bf;
+    color: #0b7b55;
+    font-weight: 700;
 }
 
-/* Selected Day */
-.selected-day {
-    background-color: var(--selected-day-bg); /* Primary blue for selected day */
-    color: var(--selected-day-text);
-    font-weight: bold;
-    border: 1px solid var(--dark-blue);
-    box-shadow: 0 4px 15px rgba(0,123,255,0.4);
-    transform: scale(1.02);
-    z-index: 5;
-}
-.selected-day:hover {
-    background-color: #0069d9;
+.friday,
+.saturday {
+    background: #f0f7ff;
+    color: #185592;
 }
 
-/* Days with Events (adds a dot) */
-.has-event {
-    position: relative;
-}
-
-.has-event::after {
-    content: '•';
-    color: var(--event-dot-color);
-    font-size: 1.8em;
-    line-height: 0.5;
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-    z-index: 2;
-    text-shadow: 0 0 3px rgba(0,0,0,0.2);
-}
-
-/* Weekend Colors (Friday and Saturday in Bangladesh context) */
-.friday, .saturday {
-    background-color: var(--weekend-blue);
-    color: var(--weekend-blue-text);
-    border-color: var(--weekend-blue-border);
-}
-
-.friday:hover:not(.selected-day), .saturday:hover:not(.selected-day) {
-    background-color: #c2e0e4;
-}
-
-/* Overrides for today if it's a weekend */
-.today.friday, .today.saturday {
-    background-color: #90caf9;
-    border-color: #2196f3;
-    color: #0d47a1;
-}
-
-/* Overrides for selected day if it's a weekend */
-.selected-day.friday, .selected-day.saturday {
-    background-color: #1976d2;
-    color: white;
-}
-
-/* Holiday specific styles with visual effect */
 .holiday {
-    background-color: var(--red-holiday);
-    font-weight: bold;
-    border: 1px solid var(--red-holiday-border);
-    color: var(--red-holiday-text);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.15);
+    background: #ffefef;
+    border-color: #ffc7c7;
+    color: #a72335;
+    font-weight: 700;
 }
 
-/* Visual effect for holidays (diagonal stripes/gradient) */
-.holiday::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: repeating-linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.1) 10px,
-        rgba(255, 255, 255, 0) 10px,
-        rgba(255, 255, 255, 0) 20px
-    );
-    opacity: 0.8;
-    z-index: 1;
-    pointer-events: none;
+.selected-day {
+    background: linear-gradient(140deg, #0f6fff, #19439a);
+    color: #fff;
+    border-color: #19439a;
 }
 
-/* Further effects for holidays: */
-.holiday:hover:not(.selected-day) {
-    box-shadow: 0 0 15px 5px rgba(255, 99, 71, 0.6);
-    transform: scale(1.04);
-    z-index: 10;
-    background-color: #ffe0e0;
-}
-
-/* Specific combination: Holiday AND Today */
-.holiday.today {
-    background-color: #ef5350;
-    border-color: #c62828;
-    color: white;
-}
-
-/* Specific combination: Holiday AND Weekend (Friday/Saturday) */
-.holiday.friday, .holiday.saturday {
-    background-color: #ffcdd2;
-    border-color: #ef5350;
-    color: #b71c1c;
-}
-
-/* Selected Holiday */
-.selected-day.holiday {
-    background-color: #d32f2f;
-    color: white;
-    border-color: #9a0007;
-}
-
-/* Selected Holiday + Weekend */
-.selected-day.holiday.friday, .selected-day.holiday.saturday {
-    background-color: #b71c1c;
-    color: white;
-    border-color: #7f0000;
-}
-
-/* Holiday Description Box */
 .info-box {
-    background-color: var(--medium-gray);
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 20px;
-    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #d8e5ff;
+    border-radius: 10px;
+    background: #f7faff;
 }
 
 .info-box h4 {
-    margin-bottom: 10px;
-    color: var(--primary-blue);
-    font-size: 1.1em;
+    margin-bottom: 6px;
+    font-size: 0.94rem;
 }
 
 .info-box p {
-    font-size: 0.95em;
-    color: #495057;
+    font-size: 0.88rem;
 }
 
-/* Resting Employees Section */
-.no-resting-message {
-    text-align: center;
-    color: #6c757d;
-    font-style: italic;
-    padding: 20px;
-}
-
-/* Working Employees Section */
-.no-working-message {
-    text-align: center;
-    color: #6c757d;
-    font-style: italic;
-    padding: 20px;
-}
-
-/* Night Shift Section */
-.no-night-shift-message {
-    text-align: center;
-    color: #6c757d;
-    font-style: italic;
-    padding: 20px;
-}
-
-/* NEW: Extra Emergency Group Section */
-#extra-emergency-section {
-    display: none; /* Hidden by default, JavaScript will show on Fridays */
-}
-
+.no-resting-message,
+.no-working-message,
+.no-night-shift-message,
 .no-extra-emergency-message {
+    color: #5a749d;
     text-align: center;
-    color: #6c757d;
-    font-style: italic;
-    padding: 20px;
+    width: 100%;
+    padding: 12px 6px;
+    font-size: 0.9rem;
 }
 
-/* CSS Marquee Replacement */
+#extra-emergency-section {
+    display: none;
+    border-color: #ffd9bf;
+    background: linear-gradient(180deg, #fff8f2 0%, #fff 100%);
+}
+
 .marquee-container {
     position: fixed;
-    bottom: 0;
     left: 0;
-    width: 100%;
-    background-color: #333;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #0f2e62, #13489a);
     color: #fff;
-    padding: 10px 0;
-    font-family: 'Inter', sans-serif; /* Use your main font */
-    font-size: 18px;
-    white-space: nowrap;
-    overflow: hidden; /* Hide anything outside the container */
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-    z-index: 1000; /* Ensure it stays on top */
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    z-index: 999;
 }
 
 .marquee-content {
-    display: inline-block; /* Essential for animation */
-    padding-left: 100%; /* Start off-screen to the right */
-    animation: marquee-animation 30s linear infinite; /* Adjust duration as needed */
+    display: inline-block;
+    white-space: nowrap;
+    padding: 8px 0;
+    padding-left: 100%;
+    font-size: 0.95rem;
+    animation: marquee-animation 30s linear infinite;
 }
 
 @keyframes marquee-animation {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-100%); }
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
 }
 
-/* --- Modal Styles --- */
+.app-footer {
+    text-align: center;
+    padding: 10px 10px 82px;
+    color: #24497b;
+    font-size: 0.9rem;
+}
+
 .modal-overlay {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black overlay */
-    /* Removed 'display: flex;' from here. It will be set by JavaScript when needed. */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    z-index: 1000; /* High z-index to be on top of everything */
-    backdrop-filter: blur(5px); /* Optional: blur background */
+    inset: 0;
+    background: rgba(5, 16, 35, 0.58);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 90%; /* Responsive width */
-    max-width: 400px; /* Max width for larger screens */
-    text-align: center;
+    width: min(92vw, 420px);
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px;
     position: relative;
-    animation: fadeInScale 0.3s ease-out forwards; /* Entry animation */
-    transform: scale(0.9); /* Start slightly smaller for animation */
-    opacity: 0; /* Start invisible for animation */
-}
-
-@keyframes fadeInScale {
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    text-align: center;
 }
 
 .modal-content img {
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--primary-blue);
-    margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
-}
-
-.modal-content h3 {
-    font-size: 1.8em;
-    margin-bottom: 8px;
-    color: var(--dark-gray);
-}
-
-.modal-content p {
-    font-size: 1.1em;
-    color: #555;
-    margin-bottom: 5px;
-}
-
-.modal-content p strong {
-    color: var(--primary-blue);
+    border: 3px solid #84b8ff;
+    margin-bottom: 12px;
 }
 
 .close-button {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 2em;
-    font-weight: bold;
-    color: #aaa;
+    right: 12px;
+    top: 8px;
+    font-size: 1.7rem;
     cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.close-button:hover {
-    color: #333;
+    color: #5a77a3;
 }
 
 .call-button {
     display: inline-block;
-    background-color: #28a745; /* Green for call button */
-    color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 1.2em;
-    font-weight: 600;
-    margin-top: 25px;
-    transition: background-color 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-    border: none; /* Ensure no default button border */
-    cursor: pointer;
-}
-
-.call-button:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
-}
-
-.call-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
-}
-
-/* Responsive Adjustments */
-/* For tablets and larger screens */
-@media (min-width: 768px) {
-    .main-content-wrapper {
-        flex-direction: row; /* Side-by-side layout */
-        flex-wrap: wrap; /* Allow sections to wrap */
-        justify-content: center; /* Center content */
-    }
-
-    #employee-profiles-section {
-        flex: 1 1 calc(33.33% - 25px); /* Approx 1/3 width, accounting for gap */
-        max-width: calc(33.33% - 25px); /* Ensure it doesn't grow too much */
-        min-width: 280px; /* Minimum width to prevent squishing */
-    }
-
-    #calendar-section {
-        flex: 1 1 calc(66.66% - 25px); /* Approx 2/3 width */
-        max-width: calc(66.66% - 25px);
-        min-width: 450px; /* Minimum width for calendar readability */
-    }
-
-    /* Adjust resting, working, and night shift sections to take full width or arrange as needed */
-    #resting-employees-section,
-    .info-panel, /* This is "Who's Working Today?" */
-    .card-section:nth-last-of-type(2), /* This targets the Night Shift section */
-    #extra-emergency-section { /* This targets the new Extra Emergency section */
-        flex: 1 1 100%; /* Takes full width below calendar and profiles */
-        margin-top: 25px; /* Add some space above if it wraps */
-    }
-
-    .employee-grid {
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    }
-}
-
-/* For larger desktops */
-@media (min-width: 1024px) {
-    #employee-profiles-section {
-        flex: 0 0 280px; /* Fixed width for profile section */
-        max-width: 280px;
-    }
-
-    #calendar-section {
-        flex: 1 1 auto; /* Calendar takes remaining space */
-        min-width: 500px;
-    }
-
-    #resting-employees-section,
-    .info-panel,
-    .card-section:nth-last-of-type(2),
-    #extra-emergency-section { /* Still full width below */
-        flex: 1 1 100%;
-    }
-
-    .employee-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-}
-
-/* New CSS for the Management Signature Section */
-.signatures-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.signature-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%; /* Full width on mobile */
-    max-width: 350px; /* Max width on desktop */
-    padding: 20px;
-    background-color: var(--light-gray);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.signature-card .signature-content {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    width: 100%; /* Ensures content fills the card */
-    justify-content: center;
-}
-
-.signature-card.left .signature-content {
-    flex-direction: row; /* Jr. Engineer on the left */
-}
-
-.signature-card.right .signature-content {
-    flex-direction: row-reverse; /* AGM on the right */
-}
-
-.signature-card .signature-photo {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--primary-blue);
-}
-
-.signature-card .signature-details {
-    text-align: left; /* Aligns text to the left for Jr. Eng */
-}
-
-.signature-card.right .signature-details {
-    text-align: right; /* Aligns text to the right for AGM */
-}
-
-.signature-card h3 {
-    font-size: 1.2em;
-    margin-bottom: 2px;
-}
-
-.signature-card p {
-    font-size: 0.9em;
-    color: #6c757d;
-}
-
-.signature-card .signature-image {
-    width: 150px;
-    height: auto;
-    border-bottom: 2px solid var(--dark-gray);
     margin-top: 10px;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(120deg, #0b8f62, #0f6b4d);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-weight: 700;
 }
-
-/* Media Queries for Responsiveness */
-@media (min-width: 768px) {
-    .main-content-wrapper {
-        flex-direction: row; /* Layout sections side-by-side on tablet/desktop */
-        flex-wrap: wrap; /* Allows sections to wrap if needed */
-        justify-content: space-between; /* Distribute space between sections */
-    }
-
-    #employee-profiles-section {
-        flex: 1 1 calc(33.33% - 25px); /* Ensure it doesn't grow too much */
-        min-width: 280px; /* Minimum width to prevent squishing */
-    }
-
-    #calendar-section {
-        flex: 1 1 calc(66.66% - 25px); /* Approx 2/3 width */
-        max-width: calc(66.66% - 25px);
-        min-width: 450px; /* Minimum width for calendar readability */
-    }
-    
-    /* Adjust signature section to take full width or arrange as needed */
-    #management-signatures-section {
-        flex: 1 1 100%; /* Takes full width below calendar and profiles */
-        margin-top: 25px; /* Add some space above if it wraps */
-    }
-    
-    .signatures-wrapper {
-        justify-content: space-between; /* Space out the two signature cards */
-    }
-
-    .signature-card {
-        width: calc(50% - 10px); /* Adjust width to fit two cards in the wrapper */
-        max-width: none;
-    }
-
-    .employee-grid {
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    }
-}
-
-/* For larger desktops */
-@media (min-width: 1024px) {
-    #employee-profiles-section {
-        flex: 0 0 280px; /* Fixed width for profile section */
-        max-width: 280px;
-    }
-
-    #calendar-section {
-        flex: 1 1 auto; /* Calendar takes remaining space */
-        max-width: none;
-    }
-}
-.signatures-heading {
-    text-align: center;
-    margin-bottom: 30px;
-    color: var(--dark-gray);
-    font-size: 1.5em;
-    font-weight: 600;
-    position: relative;
-    padding-bottom: 10px;
-    display: block;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-.signatures-heading strong {
-    color: var(--primary-blue);
-}
-
-/* ... (Existing styles up to the end) ... */
-
-/* --- NEW: Monthly Summary Table Styles (for date listing) --- */
 
 #monthly-summary-section {
-    flex: 1 1 100%; /* Make it take full width */
-    margin-top: 25px; /* Space from sections above */
-}
-.secret-section{
-    display: none;
+    overflow-x: auto;
 }
 
 .duty-summary-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    min-width: 620px;
 }
 
-.duty-summary-table th, .duty-summary-table td {
-    padding: 10px 15px;
-    border: 1px solid var(--medium-gray);
-    text-align: left;
-    font-size: 0.95rem;
+.duty-summary-table th,
+.duty-summary-table td {
+    border: 1px solid #dce8ff;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
 }
 
 .duty-summary-table th {
-    background-color: var(--dark-gray);
-    color: white;
-    font-weight: 600;
-    text-align: center;
-}
-
-.duty-summary-table td {
-    background-color: white;
-    /* Ensure date columns are centered for better readability */
-    text-align: center; 
-    font-weight: 500;
+    background: #12386f;
+    color: #fff;
 }
 
 .duty-summary-table td:first-child {
-    /* Employee Name column should be left-aligned */
     text-align: left;
+    color: #1a3e74;
     font-weight: 600;
-    color: var(--dark-blue);
 }
 
-/* Optional: Make the table responsive on very small screens */
-@media (max-width: 600px) {
-    .duty-summary-table th, .duty-summary-table td {
-        padding: 8px;
-        font-size: 0.85rem;
+.signatures-heading {
+    width: 100%;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.signatures-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.signature-card {
+    flex: 1;
+    min-width: 240px;
+    border: 1px solid #dce9ff;
+    border-radius: 12px;
+    padding: 10px;
+    background: #f8fbff;
+}
+
+.signature-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.signature-card.right .signature-content {
+    flex-direction: row-reverse;
+}
+
+.signature-photo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #8dbfff;
+}
+
+.signature-details {
+    text-align: left;
+}
+
+.signature-card.right .signature-details {
+    text-align: right;
+}
+
+.signature-image {
+    display: block;
+    width: 140px;
+    margin: 10px auto 0;
+}
+
+@media (min-width: 768px) {
+    .main-content-wrapper {
+        padding: 0 16px 24px;
     }
+
+    .dashboard-sections {
+        gap: 14px;
+    }
+
+    .card-section {
+        padding: 16px;
+    }
+
+    .employee-grid {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    }
+
+    .calendar-grid > div {
+        min-height: 44px;
+        font-size: 0.93rem;
+    }
+
+    #headline {
+        font-size: clamp(1.8rem, 3vw, 2.45rem);
+    }
+
 }
-
-        /* Style the input and button */
-        #password-input {
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
