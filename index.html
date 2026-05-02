@@ -4,126 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office Duty Roster - Linemen Team</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* For demonstration purposes, adding some body height to show the fixed footer */
-    body {
-            margin-bottom: 70px; /* Adjust based on marquee height */
-            min-height: 100vh;
-        }
-    </style>
 </head>
-<body> 
+<body>
+    <div class="bg-decor"></div>
+
     <header class="app-header">
-        <h1 id="headline">Linemen Duty Roster</h1>
-        <p id="head">Shamganj Sub-Zonal Office, NPBS</p>
+        <div class="header-inner">
+            <h1 id="headline">Linemen Duty Roster</h1>
+            <p id="head">Shamganj Sub-Zonal Office, NPBS</p>
+        </div>
     </header>
 
     <main class="main-content-wrapper">
-        <section id="employee-profiles-section" class="card-section">
-            <h2>Our Linemen Team</h2>
-            <div id="employee-profiles-grid" class="employee-grid">
+        <div id="dashboard-sections" class="dashboard-sections">
+            <section id="resting-employees-section" class="card-section">
+                <h2>Who&apos;s Resting Today?</h2>
+                <div id="resting-employees-grid" class="employee-grid">
+                    <p class="no-resting-message">No employee is resting today.</p>
                 </div>
-        </section>
+            </section>
 
-        <section id="calendar-section" class="card-section">
-            <h2>Duty Calendar</h2>
-            <div id="calendar-controls">
-                <button id="prevMonth">Prev</button>
-                <h3 id="currentMonthYear"></h3>
-                <button id="nextMonth">Next</button>
-            </div>
-            <div id="calendar-grid" class="calendar-grid">
+            <section id="working-section" class="card-section">
+                <h2>Who&apos;s On Duty Today?</h2>
+                <div id="working-employees-grid" class="employee-grid">
+                    <p class="no-working-message">All linemen are resting today.</p>
                 </div>
-            <div id="holiday-description-box" class="info-box">
-                <h4>Selected Date Info: <span id="selectedDateDisplay"></span></h4>
-                <p id="holiday-info">Click on a date to see details.</p>
-            </div>
-        </section>
-                
+            </section>
 
-
-        <section id="resting-employees-section" class="card-section">
-            <h2>Who's Resting Today?</h2>
-            <div id="resting-employees-grid" class="employee-grid">
-                <p class="no-resting-message">No employee is resting today.</p>
-            </div>
-        </section>
-
-        <section class="info-panel card-section">
-            <h2>Who's Working Today?</h2>
-            <div id="working-employees-grid" class="employee-grid">
-                <p class="no-working-message">All linemen are resting today.</p>
-            </div>
-        </section>
-        <section id="extra-emergency-section" class="card-section">
-            <h2>Extra Emergency Group (Friday Only)</h2>
-            <div id="extra-emergency-grid" class="employee-grid">
-                <p class="no-extra-emergency-message">No one assigned to the Extra Emergency Group today.</p>
-            </div>
-        </section>
-
-        <section class="card-section">
-            <h2>Night Shift Duty</h2>
-            <div id="night-shift-employees-grid" class="employee-grid">
-                <p class="no-night-shift-message">No one is assigned for night shift today.</p>
-            </div>
-        </section>
-            <h2>Restricted Access</h2>
-        <section>
-          <div id="login-container">
-           <input type="password" id="password-input" placeholder="Enter Password">
-           <button onclick="checkPassword()">Unlock</button>
-            <p id="error-message" style="color: red; display: none;">Incorrect password!</p>
-          </div> 
-          </section>
-
-        <section id="monthly-summary-section" class="card-section secret-section">
-            
-            <h2>Monthly Duty Summary: <span id="summaryMonthYear"></span></h2>
-            <div id="monthly-duty-table-container">
+            <section id="extra-emergency-section" class="card-section">
+                <h2>Friday Extra Emergency Team</h2>
+                <div id="extra-emergency-grid" class="employee-grid">
+                    <p class="no-extra-emergency-message">No one assigned to the extra emergency group today.</p>
                 </div>
-        </section> 
+            </section>
 
-        <section id="management-signatures-section" class="card-section">
-            <div class="signatures-wrapper">
-            <h3 class="signatures-heading">Signature and Recommendation of <strong>Authorities</strong>:</h3>
-                            <div class="signature-card left">
-                    <div class="signature-content">
-                        <img src="./walid.jpg" alt="Jr. Engineer's Photo" class="signature-photo">
-                        <div class="signature-details">
-                            <h3>Walid Hasan Gunalp</h3>
-                            <p>Jr. Engineer</p>
+            <section id="night-shift-section" class="card-section">
+                <h2>Night Shift Duty</h2>
+                <div id="night-shift-employees-grid" class="employee-grid">
+                    <p class="no-night-shift-message">No one is assigned for night shift today.</p>
+                </div>
+            </section>
+
+            <section id="calendar-section" class="card-section">
+                <h2>Duty Calendar</h2>
+                <div id="calendar-controls">
+                    <button id="prevMonth" type="button">Prev</button>
+                    <h3 id="currentMonthYear"></h3>
+                    <button id="nextMonth" type="button">Next</button>
+                </div>
+                <div id="calendar-grid" class="calendar-grid"></div>
+                <div id="holiday-description-box" class="info-box">
+                    <h4>Selected Date Info: <span id="selectedDateDisplay"></span></h4>
+                    <p id="holiday-info">Click on a date to see details.</p>
+                </div>
+            </section>
+
+            <section id="employee-profiles-section" class="card-section">
+                <div class="section-header-with-action">
+                    <h2>All Linemen</h2>
+                    <button id="toggle-linemen-btn" class="ghost-btn" type="button" aria-expanded="false">Show All Linemen</button>
+                </div>
+                <div id="employee-profiles-content" class="collapsed">
+                    <div id="employee-profiles-grid" class="employee-grid"></div>
+                </div>
+            </section>
+
+
+            <section id="monthly-summary-section" class="card-section secret-section">
+                <h2>Monthly Duty Summary: <span id="summaryMonthYear"></span></h2>
+                <div id="monthly-duty-table-container"></div>
+            </section>
+
+            <section id="management-signatures-section" class="card-section">
+                <div class="signatures-wrapper">
+                    <h3 class="signatures-heading">Signature and Recommendation of <strong>Authorities</strong>:</h3>
+                    <div class="signature-card left">
+                        <div class="signature-content">
+                            <img src="./walid.jpg" alt="Jr. Engineer's Photo" class="signature-photo">
+                            <div class="signature-details">
+                                <h3>Walid Hasan Gunalp</h3>
+                                <p>Jr. Engineer</p>
+                            </div>
                         </div>
+                        <img src="https://placehold.co/150x50/cccccc/000?text=Signature" alt="Jr. Engineer's Signature" class="signature-image">
                     </div>
-                    <img src="https://placehold.co/150x50/cccccc/000?text=Signature" alt="Jr. Engineer's Signature" class="signature-image">
-                </div>
 
-                <div class="signature-card right">
-                    <div class="signature-content">
-                        <img src="./kabir.jpg" alt="AGM's Photo" class="signature-photo">
-                        <div class="signature-details">
-                            <h3>MD. Golam Kabir</h3>
-                            <p>AGM O&M</p>
+                    <div class="signature-card right">
+                        <div class="signature-content">
+                            <img src="./kabir.jpg" alt="AGM's Photo" class="signature-photo">
+                            <div class="signature-details">
+                                <h3>MD. Golam Kabir</h3>
+                                <p>AGM O&amp;M</p>
+                            </div>
                         </div>
+                        <img src="https://placehold.co/150x50/cccccc/000?text=Signature" alt="AGM's Signature" class="signature-image">
                     </div>
-                    <img src="https://placehold.co/150x50/cccccc/000?text=Signature" alt="AGM's Signature" class="signature-image">
                 </div>
-            </div>
-        </section>
-        </main>
+            </section>
+        </div>
+    </main>
 
     <div class="marquee-container">
         <div class="marquee-content">
             <span>
-                বিঃদ্রঃ জরুরী মুহূর্ত যেমন বৈরী আবহাওয়া, প্রাকৃতিক দুর্যোগ কিংবা বিশেষ প্রয়োজনে সবার কর্মস্থলে উপস্থিতি এবং ডিউটি বাধ্যতামূলক। তবে বরাদ্ধকৃত ছুটি পরবর্তী কার্যদিবসে ভোগ করতে পারবেন। অবশ্যই নিজের নিরাপত্তা বজায় রেখে কার্য সম্পাদন করুন এবং যথা সময়ে নামাজ আদায় করুন। ধন্যবাদ। 👨‍🔧 🪓 🔨 ⛏ ⚒ 🛠 🔧 ⛑
+                বিঃদ্রঃ জরুরি মুহূর্ত যেমন বৈরী আবহাওয়া, প্রাকৃতিক দুর্যোগ কিংবা বিশেষ প্রয়োজনে সবার কর্মস্থলে উপস্থিতি এবং ডিউটি বাধ্যতামূলক। তবে বরাদ্দকৃত ছুটি পরবর্তী কার্যদিবসে ভোগ করতে পারবেন। অবশ্যই নিজের নিরাপত্তা বজায় রেখে কার্য সম্পাদন করুন এবং যথাসময়ে নামাজ আদায় করুন। ধন্যবাদ।
             </span>
         </div>
     </div>
 
     <footer class="app-footer">
-        <p>&copy; 2025 Rakib Ahmed. All rights reserved.</p>
+        <p>&copy; 2026 Rakib Ahmed. All rights reserved.</p>
     </footer>
 
     <div id="employeeModal" class="modal-overlay">
@@ -139,6 +131,5 @@
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
