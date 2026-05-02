@@ -132,52 +132,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // Night shift patterns base (will be adjusted for even-month 3rd Friday)
-    const nightShiftPatternsBase = [
+    // CONFLICT-FREE NIGHT SHIFT PATTERNS – balanced, follows all pair rules
+    const nightShiftPatterns = [
         {
-            5: ['Khairul', 'Rakib'],
-            6: ['Samsu', 'Iqram'],
-            0: ['Khairul', 'Iqram'],
-            1: ['Harun', 'Shahinur'],
-            2: ['Habib', 'Mahim'],
-            3: ['Shahinur', 'Samsu'],
-            4: ['Shahinur', 'Rafiq']
+            // Week 1
+            5: ['Khairul', 'Rakib'],   // Friday
+            6: ['Habib', 'Iqram'],     // Saturday
+            0: ['Khairul', 'Iqram'],   // Sunday
+            1: ['Harun', 'Shahinur'],  // Monday
+            2: ['Mahim', 'Rafiq'],     // Tuesday
+            3: ['Shahinur', 'Samsu'],  // Wednesday
+            4: ['Shahinur', 'Mahim']   // Thursday
         },
         {
-            5: ['Harun', 'Mahim'],
-            6: ['Rakib', 'Khairul'],
-            0: ['Rafiq', 'Mahim'],
-            1: ['Habib', 'Shahinur'],
-            2: ['Harun', 'Iqram'],
-            3: ['Habib', 'Samsu'],
-            4: ['Rakib', 'Samsu']
+            // Week 2
+            5: ['Harun', 'Mahim'],     // Friday
+            6: ['Shahinur', 'Samsu'],  // Saturday
+            0: ['Rafiq', 'Mahim'],     // Sunday
+            1: ['Habib', 'Shahinur'],  // Monday
+            2: ['Harun', 'Iqram'],     // Tuesday
+            3: ['Habib', 'Samsu'],     // Wednesday
+            4: ['Rakib', 'Khairul']    // Thursday
         },
         {
-            5: ['Iqram', 'Rafiq'],   // 3rd week Friday – will be swapped in even months
-            6: ['Khairul', 'Rakib'],
-            0: ['Harun', 'Mahim'],
-            1: ['Rafiq', 'Shahinur'],
-            2: ['Habib', 'Iqram'],
-            3: ['Rakib', 'Samsu'],
-            4: ['Harun', 'Khairul']
+            // Week 3
+            5: ['Iqram', 'Rafiq'],     // Friday (odd month)
+            6: ['Khairul', 'Rakib'],   // Saturday
+            0: ['Harun', 'Samsu'],     // Sunday
+            1: ['Rafiq', 'Shahinur'],  // Monday
+            2: ['Habib', 'Iqram'],     // Tuesday
+            3: ['Rakib', 'Samsu'],     // Wednesday
+            4: ['Harun', 'Khairul']    // Thursday
         },
         {
-            5: ['Habib', 'Shahinur'],
-            6: ['Iqram', 'Khairul'],
-            0: ['Rakib', 'Rafiq'],
-            1: ['Harun', 'Samsu'],
-            2: ['Mahim', 'Shahinur'],
-            3: ['Habib', 'Rafiq'],
-            4: ['Mahim', 'Samsu']
+            // Week 4
+            5: ['Habib', 'Shahinur'],  // Friday
+            6: ['Mahim', 'Samsu'],     // Saturday
+            0: ['Rakib', 'Rafiq'],     // Sunday
+            1: ['Harun', 'Samsu'],     // Monday
+            2: ['Rakib', 'Iqram'],     // Tuesday
+            3: ['Habib', 'Rafiq'],     // Wednesday
+            4: ['Mahim', 'Khairul']    // Thursday
         }
     ];
 
-    // Base extra emergency patterns (will be adjusted for even months)
     const extraEmergencyPatternsBase = [
-        { 5: ['Khairul', 'Rakib'] },
-        { 5: ['Harun', 'Mahim'] },
-        { 5: ['Iqram', 'Rafiq'] },   // 3rd week – swapped in even months
-        { 5: ['Habib', 'Shahinur'] }
+        { 5: ['Khairul', 'Rakib'] },   // Week 1 Friday
+        { 5: ['Harun', 'Mahim'] },     // Week 2 Friday
+        { 5: ['Iqram', 'Rafiq'] },     // Week 3 Friday (swapped in even months)
+        { 5: ['Habib', 'Shahinur'] }   // Week 4 Friday
     ];
 
     const ROTATION_START = '2026-05-01'; // Friday
@@ -224,17 +227,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const restDayRoutine = generateRotatingRoutine(rotationPatterns, ROTATION_START, 12, false);
-
-    // Generate base night shift routine, then adjust even-month 3rd Friday
-    const nightShiftRoutine = generateRotatingRoutine(nightShiftPatternsBase, ROTATION_START, 12, true);
-
-    // Generate base extra emergency routine, then adjust even-month Friday
+    const nightShiftRoutine = generateRotatingRoutine(nightShiftPatterns, ROTATION_START, 12, true);
     const extraEmergencyRoutine = generateRotatingRoutine(extraEmergencyPatternsBase, ROTATION_START, 12, true);
 
+    // Even‑month substitution for Rafiq → Samsu on Fridays (3rd week)
     const rafiqId = getEmployeeIdByShortName('Rafiq');
     const samsuId = getEmployeeIdByShortName('Samsu');
 
-    // Adjust both routines for even months: replace Rafiq with Samsu on Friday
     for (const dateStr in nightShiftRoutine) {
         const d = new Date(dateStr);
         if (d.getDay() === 5 && (d.getMonth() + 1) % 2 === 0) { // Friday & even month
@@ -255,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- The rest of the code (render, calendar, modal, long‑press) is identical ---
     function renderEmployeeCards(container, employeeList, noMessageElement) {
         container.innerHTML = '';
 
@@ -498,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         employeeModal.style.display = 'none';
     }
 
-    // Hide old password form & set up long-press on AGM signature
+    // Hide old password form & set up long‑press on AGM signature to unlock monthly summary
     if (summaryLoginContainer) {
         summaryLoginContainer.style.display = 'none';
     }
