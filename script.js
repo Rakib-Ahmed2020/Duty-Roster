@@ -523,12 +523,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Changed target from signature to AGM photo
+    // ~~~~~ UPDATED LONG‑PRESS ON AGM PHOTO (Android‑friendly) ~~~~~
     const agmPhotoImg = document.querySelector('.signature-card.right .signature-photo');
     let pressTimer = null;
 
     function startPress(e) {
-        e.preventDefault();
+        // Prevent default only for touch events to suppress image save menu
+        if (e.cancelable) e.preventDefault();
         pressTimer = setTimeout(() => {
             showPasswordPrompt();
             pressTimer = null;
@@ -543,12 +544,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (agmPhotoImg) {
+        // Disable long‑press callout and selection on Android
+        agmPhotoImg.style.webkitTouchCallout = 'none';
+        agmPhotoImg.style.userSelect = 'none';
+        agmPhotoImg.style.touchAction = 'none';
+
+        // Touch events (mobile / Android WebView)
+        agmPhotoImg.addEventListener('touchstart', startPress, { passive: false });
+        agmPhotoImg.addEventListener('touchend', cancelPress);
+        agmPhotoImg.addEventListener('touchcancel', cancelPress);
+        agmPhotoImg.addEventListener('touchmove', cancelPress);   // cancel if finger moves
+
+        // Pointer & mouse events (desktop fallback)
+        agmPhotoImg.addEventListener('mousedown', startPress);
+        agmPhotoImg.addEventListener('mouseup', cancelPress);
+        agmPhotoImg.addEventListener('mouseleave', cancelPress);
         agmPhotoImg.addEventListener('pointerdown', startPress);
         agmPhotoImg.addEventListener('pointerup', cancelPress);
-        agmPhotoImg.addEventListener('pointerleave', cancelPress);
         agmPhotoImg.addEventListener('pointercancel', cancelPress);
+        agmPhotoImg.addEventListener('pointerleave', cancelPress);
+
+        // Prevent context menu
         agmPhotoImg.addEventListener('contextmenu', (e) => e.preventDefault());
     }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     if (summaryUnlockBtn) {
         summaryUnlockBtn.style.display = 'none';
