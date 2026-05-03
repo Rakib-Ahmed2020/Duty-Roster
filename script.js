@@ -496,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         employeeModal.style.display = 'none';
     }
 
-    // Hide old password form & set up long‑press on AGM signature to unlock monthly summary
+    // Hide old password form & set up long‑press on AGM photo to unlock monthly summary
     if (summaryLoginContainer) {
         summaryLoginContainer.style.display = 'none';
     }
@@ -523,7 +523,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    const agmSignatureImg = document.querySelector('.signature-card.right .signature-image');
+    // Changed target from signature to AGM photo
+    const agmPhotoImg = document.querySelector('.signature-card.right .signature-photo');
     let pressTimer = null;
 
     function startPress(e) {
@@ -541,12 +542,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (agmSignatureImg) {
-        agmSignatureImg.addEventListener('pointerdown', startPress);
-        agmSignatureImg.addEventListener('pointerup', cancelPress);
-        agmSignatureImg.addEventListener('pointerleave', cancelPress);
-        agmSignatureImg.addEventListener('pointercancel', cancelPress);
-        agmSignatureImg.addEventListener('contextmenu', (e) => e.preventDefault());
+    if (agmPhotoImg) {
+        agmPhotoImg.addEventListener('pointerdown', startPress);
+        agmPhotoImg.addEventListener('pointerup', cancelPress);
+        agmPhotoImg.addEventListener('pointerleave', cancelPress);
+        agmPhotoImg.addEventListener('pointercancel', cancelPress);
+        agmPhotoImg.addEventListener('contextmenu', (e) => e.preventDefault());
     }
 
     if (summaryUnlockBtn) {
