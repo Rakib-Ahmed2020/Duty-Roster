@@ -496,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         employeeModal.style.display = 'none';
     }
 
-    // Hide old password form & set up long‑press on AGM photo to unlock monthly summary
+    // Hide old password form
     if (summaryLoginContainer) {
         summaryLoginContainer.style.display = 'none';
     }
@@ -514,7 +514,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showPasswordPrompt() {
-        const password = prompt('Long press detected. Enter password to view Monthly Summary:');
+        // Only show prompt if summary is still hidden (secret-section class still present)
+        if (!monthlySummarySection.classList.contains('secret-section')) {
+            return; // already unlocked
+        }
+        const password = prompt('Enter password to view Monthly Summary:');
         if (password !== null) {
             const success = attemptUnlock(password.trim());
             if (!success) {
@@ -523,51 +527,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ~~~~~ UPDATED LONG‑PRESS ON AGM PHOTO (Android‑friendly) ~~~~~
-    const agmPhotoImg = document.querySelector('.signature-card.right .signature-photo');
-    let pressTimer = null;
+    // ~~~~~ 7‑CLICK SECRET ON AGM SIGNATURE ~~~~~
+    const agmSignatureImg = document.querySelector('.signature-card.right .signature-image');
+    let clickCount = 0;
+    let clickTimeout = null;
 
-    function startPress(e) {
-        // Prevent default only for touch events to suppress image save menu
-        if (e.cancelable) e.preventDefault();
-        pressTimer = setTimeout(() => {
+    function handleSignatureClick(e) {
+        e.preventDefault(); // prevent any default image action
+
+        clickCount++;
+        // Reset the count after 2 seconds of inactivity (or after reaching 7)
+        if (clickTimeout) clearTimeout(clickTimeout);
+        
+        if (clickCount >= 7) {
+            clickCount = 0;
             showPasswordPrompt();
-            pressTimer = null;
-        }, 5000);
-    }
-
-    function cancelPress() {
-        if (pressTimer) {
-            clearTimeout(pressTimer);
-            pressTimer = null;
+            // No need to set a timeout after triggering
+        } else {
+            // Set a timeout to reset click count if not completed within 2 seconds
+            clickTimeout = setTimeout(() => {
+                clickCount = 0;
+            }, 2000);
         }
     }
 
-    if (agmPhotoImg) {
-        // Disable long‑press callout and selection on Android
-        agmPhotoImg.style.webkitTouchCallout = 'none';
-        agmPhotoImg.style.userSelect = 'none';
-        agmPhotoImg.style.touchAction = 'none';
+    if (agmSignatureImg) {
+        // Make the signature image look clickable (pointer cursor)
+        agmSignatureImg.style.cursor = 'pointer';
+        // Disable callout/selection
+        agmSignatureImg.style.webkitTouchCallout = 'none';
+        agmSignatureImg.style.userSelect = 'none';
+        agmSignatureImg.style.touchAction = 'manipulation';
 
-        // Touch events (mobile / Android WebView)
-        agmPhotoImg.addEventListener('touchstart', startPress, { passive: false });
-        agmPhotoImg.addEventListener('touchend', cancelPress);
-        agmPhotoImg.addEventListener('touchcancel', cancelPress);
-        agmPhotoImg.addEventListener('touchmove', cancelPress);   // cancel if finger moves
-
-        // Pointer & mouse events (desktop fallback)
-        agmPhotoImg.addEventListener('mousedown', startPress);
-        agmPhotoImg.addEventListener('mouseup', cancelPress);
-        agmPhotoImg.addEventListener('mouseleave', cancelPress);
-        agmPhotoImg.addEventListener('pointerdown', startPress);
-        agmPhotoImg.addEventListener('pointerup', cancelPress);
-        agmPhotoImg.addEventListener('pointercancel', cancelPress);
-        agmPhotoImg.addEventListener('pointerleave', cancelPress);
-
+        agmSignatureImg.addEventListener('click', handleSignatureClick);
         // Prevent context menu
-        agmPhotoImg.addEventListener('contextmenu', (e) => e.preventDefault());
+        agmSignatureImg.addEventListener('contextmenu', (e) => e.preventDefault());
     }
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     if (summaryUnlockBtn) {
         summaryUnlockBtn.style.display = 'none';
