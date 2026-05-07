@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             6: ['Habib', 'Iqram'],     // Saturday
             0: ['Khairul', 'Iqram'],   // Sunday
             1: ['Harun', 'Shahinur'],  // Monday
-            2: ['Mahim', 'Rafiq'],     // Tuesday
+            2: ['Rakib', 'Rafiq'],     // Tuesday
             3: ['Shahinur', 'Samsu'],  // Wednesday
             4: ['Shahinur', 'Mahim']   // Thursday
         },
@@ -148,11 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Week 2
             5: ['Harun', 'Mahim'],     // Friday
             6: ['Shahinur', 'Samsu'],  // Saturday
-            0: ['Rafiq', 'Mahim'],     // Sunday
+            0: ['Rakib', 'Mahim'],     // Sunday
             1: ['Habib', 'Rafiq'],  // Monday
             2: ['Harun', 'Iqram'],     // Tuesday
             3: ['Habib', 'Mahim'],     // Wednesday
-            4: ['Rakib', 'Khairul']    // Thursday
+            4: ['Rafiq', 'Khairul']    // Thursday
         },
         {
             // Week 3
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             6: ['Mahim', 'Samsu'],     // Saturday
             0: ['Rakib', 'Rafiq'],     // Sunday
             1: ['Harun', 'Samsu'],     // Monday
-            2: ['Rakib', 'Iqram'],     // Tuesday
+            2: ['Mahim', 'Iqram'],     // Tuesday
             3: ['Habib', 'Rafiq'],     // Wednesday
             4: ['Mahim', 'Khairul']    // Thursday
         }
