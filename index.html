@@ -129,7 +129,7 @@
             <a id="callNowButton" href="#" class="call-button">Call Now</a>
         </div>
     </div>
-    <audio id="intro-audio" autoplay>
+    <audio id="intro-audio" preload="auto">
   <source src="./bismillah.mp3" type="audio/mpeg">
   <source src="./bismillah.ogg" type="audio/ogg">
   Your browser does not support the audio element.
@@ -137,19 +137,54 @@
 <script>
   const audio = document.getElementById("intro-audio");
 
+  const removeInteractionListeners = () => {
+    document.removeEventListener("pointerdown", playIntroOnce);
+    document.removeEventListener("keydown", playIntroOnce);
+  };
+
+  const playIntroOnce = () => {
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => removeInteractionListeners())
+        .catch(() => {
+          // Browsers may block autoplay until the user interacts with the page.
+        });
+    }
+  };
+
   window.addEventListener("DOMContentLoaded", () => {
-    audio.play().catch(() => {
-      const playOnce = () => {
-        audio.play().catch(() => {});
-        document.removeEventListener("click", playOnce);
-        document.removeEventListener("keydown", playOnce);
-      };
-      document.addEventListener("click", playOnce);
-      document.addEventListener("keydown", playOnce);
-    });
+    audio.currentTime = 0;
+    playIntroOnce();
+
+    // Retry once on the user's first interaction if autoplay is blocked.
+    document.addEventListener("pointerdown", playIntroOnce);
+    document.addEventListener("keydown", playIntroOnce);
   });
 </script>
 
     <script src="script.js"></script>
+
+    <button id="hadith-fab" class="hadith-fab" type="button" aria-label="Read a random Hadith or Quran verse" aria-haspopup="dialog">
+        <span class="hadith-fab-glow"></span>
+        <span class="hadith-fab-symbol" aria-hidden="true">
+            <img class="munajat-image" src="./dua.jfif" alt="">
+        </span>
+    </button>
+
+    <div id="hadith-modal" class="hadith-modal" role="dialog" aria-modal="true" aria-labelledby="hadith-title" aria-hidden="true">
+        <article class="hadith-card">
+            <button id="hadith-close" class="hadith-close" type="button" aria-label="Close Hadith">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div class="hadith-ornament" aria-hidden="true">✦</div>
+            <p class="hadith-eyebrow">Daily Inspiration</p>
+            <h3 id="hadith-title">Hadith</h3>
+            <div class="hadith-divider"><span></span></div>
+            <blockquote id="hadith-text"></blockquote>
+            <p id="hadith-reference" class="hadith-reference"></p>
+        </article>
+    </div>
 </body>
 </html>
