@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const employees = [
         { id: 'lineman1', name: 'Harunur Rashid', designation: 'Line Technician', photo: './harun.png', shortName: 'Harun', bloodGroup: 'B+', mobileNumber: '01708658384' },
-        { id: 'lineman2', name: 'Md. Habibur Rahman', designation: 'Lineman Grade-1', photo: './20250716_195749.jpg', shortName: 'Habib', bloodGroup: 'B+', mobileNumber: '01721514164' },
         { id: 'lineman3', name: 'Shahinur Rahman', designation: 'Lineman Grade-1', photo: './shahinurlm.jpg', shortName: 'Shahinur', bloodGroup: 'AB+', mobileNumber: '01721338529' },
         { id: 'lineman4', name: 'Md. Iqram Hossain', designation: 'Lineman Grade-2', photo: './iqram.jpg', shortName: 'Iqram', bloodGroup: 'AB+', mobileNumber: '01856329315' },
         { id: 'lineman5', name: 'Md. Khairul Islam', designation: 'Lineman Grade-2 ', photo: './1000078055.jpg', shortName: 'Khairul', bloodGroup: 'AB+', mobileNumber: '01963518200' },
         { id: 'lineman6', name: 'Md. Rakib Ahmed', designation: 'Lineman Grade-2', photo: './Rakib_profile.jpg', shortName: 'Rakib', bloodGroup: 'O+', mobileNumber: '01735298588' },
-        { id: 'lineman7', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim.jpg', shortName: 'Mahim', bloodGroup: 'O+', mobileNumber: '01770885997' },
+        { id: 'lineman2', name: 'AB Nadel', designation: 'Lineman Grade-2', photo: './nadel.jpg', shortName: 'Habib', bloodGroup: 'B+', mobileNumber: '01751122047' },
+        { id: 'lineman7', name: 'Mahim Hossain', designation: 'AP LM', photo: './mahim-new.jpg', shortName: 'Mahim', bloodGroup: 'O+', mobileNumber: '01770885997' },
         { id: 'lineman9', name: 'Md. Samsul Haque', designation: 'L/S', photo: './1000078056.jpg', shortName: 'Samsu', bloodGroup: 'O+', mobileNumber: '01717973288' },
         { id: 'lineman8', name: 'Md. Rafiqul Islam', designation: 'L/S', photo: './rofik.png', shortName: 'Rafiq', bloodGroup: 'A+', mobileNumber: '01918039245' }
     ];
