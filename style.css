@@ -502,30 +502,247 @@ button:hover {
     margin: 10px auto 0;
 }
 
-@media (min-width: 768px) {
-    .main-content-wrapper {
-        padding: 0 16px 24px;
+/* Hadith floating action and card */
+.hadith-fab {
+    position: fixed;
+    left: 18px;
+    bottom: 58px;
+    width: 66px;
+    height: 66px;
+    z-index: 1100;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 50%;
+    padding: 0;
+    color: #fff;
+    background: linear-gradient(145deg, #1a9f78 0%, #0876a3 100%);
+    box-shadow: 0 12px 30px rgba(5, 96, 105, 0.34), inset 0 1px 10px rgba(255, 255, 255, 0.28);
+    animation: hadith-float 3.2s ease-in-out infinite;
+}
+
+.hadith-fab:hover,
+.hadith-fab:focus-visible {
+    transform: scale(1.08);
+    filter: brightness(1.06);
+}
+
+.hadith-fab:focus-visible,
+.hadith-close:focus-visible {
+    outline: 3px solid rgba(255, 203, 92, 0.95);
+    outline-offset: 4px;
+}
+
+.hadith-fab-glow {
+    position: absolute;
+    inset: -7px;
+    border: 2px solid rgba(26, 159, 120, 0.38);
+    border-radius: 50%;
+    animation: hadith-ripple 2.4s ease-out infinite;
+}
+
+.hadith-fab-symbol {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 240, 172, 0.14) 0%, rgba(255, 255, 255, 0.04) 58%, transparent 68%);
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes hadith-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-7px) rotate(2deg); }
+}
+
+@keyframes hadith-ripple {
+    0% { transform: scale(0.78); opacity: 0; }
+    35% { opacity: 1; }
+    100% { transform: scale(1.18); opacity: 0; }
+}
+
+.hadith-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(7, 24, 43, 0.66);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.hadith-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hadith-card {
+    position: relative;
+    width: min(92vw, 560px);
+    max-height: min(78vh, 620px);
+    overflow-y: auto;
+    padding: 34px 28px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 24px;
+    text-align: center;
+    color: #17324c;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(70, 187, 151, 0.14), transparent 34%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(241, 249, 248, 0.98));
+    box-shadow: 0 26px 70px rgba(4, 28, 52, 0.32), inset 0 0 0 7px rgba(15, 111, 255, 0.025);
+    transform: translateY(24px) scale(0.96);
+    transition: transform 300ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.hadith-modal.is-open .hadith-card {
+    transform: translateY(0) scale(1);
+}
+
+.hadith-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid #d5e7e4;
+    padding: 0;
+    color: #31576a;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 6px 16px rgba(24, 77, 90, 0.10);
+    font-size: 28px;
+    line-height: 1;
+    transition: transform 180ms ease, background 180ms ease;
+}
+
+.hadith-close:hover {
+    transform: rotate(90deg);
+    background: #edf7f5;
+}
+
+.hadith-ornament {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    color: #c28b32;
+    background: linear-gradient(145deg, #fff8df, #edf8f4);
+    box-shadow: 0 8px 22px rgba(189, 139, 49, 0.14);
+    font-size: 20px;
+}
+
+.hadith-eyebrow {
+    margin-bottom: 2px;
+    color: #16806b;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.hadith-card h3 {
+    margin: 0;
+    color: #17324c;
+    font-size: clamp(1.25rem, 5vw, 1.55rem);
+}
+
+.hadith-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 72%;
+    margin: 12px auto 16px;
+}
+
+.hadith-divider::before,
+.hadith-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, #d6b56d);
+}
+
+.hadith-divider::after {
+    background: linear-gradient(90deg, #d6b56d, transparent);
+}
+
+.hadith-divider span {
+    width: 7px;
+    height: 7px;
+    transform: rotate(45deg);
+    background: #d0a84f;
+}
+
+#hadith-text {
+    margin: 0;
+    padding: 0;
+    color: #1d3b55;
+    font-size: clamp(1rem, 4.2vw, 1.22rem);
+    line-height: 1.82;
+}
+
+.hadith-reference {
+    margin: 20px 0 0;
+    padding-top: 13px;
+    border-top: 1px solid #dfeae8;
+    color: #4f7180;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+body.hadith-open {
+    overflow: hidden;
+}
+
+.munajat-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 42%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 248, 194, 0.92);
+    box-shadow:
+        inset 0 0 12px rgba(255, 255, 255, 0.22),
+        0 4px 10px rgba(5, 62, 67, 0.28);
+    animation: prayer-hands-glow 2.8s ease-in-out infinite;
+}
+
+@media (max-width: 480px) {
+    .hadith-fab {
+        left: 12px;
+        bottom: 54px;
+        width: 58px;
+        height: 58px;
     }
 
-    .dashboard-sections {
-        gap: 14px;
+    .hadith-card {
+        padding: 30px 20px 22px;
+        border-radius: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hadith-fab,
+    .hadith-fab-glow {
+        animation: none;
     }
 
-    .card-section {
-        padding: 16px;
+    .hadith-modal,
+    .hadith-card,
+    .hadith-close {
+        transition: none;
     }
-
-    .employee-grid {
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    }
-
-    .calendar-grid > div {
-        min-height: 44px;
-        font-size: 0.93rem;
-    }
-
-    #headline {
-        font-size: clamp(1.8rem, 3vw, 2.45rem);
-    }
-
 }
