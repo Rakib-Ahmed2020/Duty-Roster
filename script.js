@@ -595,6 +595,104 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target === employeeModal) closeEmployeeModal();
     });
 
+    const hadithFab = document.getElementById('hadith-fab');
+    const hadithModal = document.getElementById('hadith-modal');
+    const hadithClose = document.getElementById('hadith-close');
+    const hadithText = document.getElementById('hadith-text');
+    const hadithReference = document.getElementById('hadith-reference');
+    const hadithTitle = document.getElementById('hadith-title');
+    const hadithEyebrow = hadithModal.querySelector('.hadith-eyebrow');
+    let inspirations = [];
+    let lastInspirationIndex = -1;
+
+    async function loadInspirations() {
+        try {
+            const [hadithResponse, verseResponse] = await Promise.all([
+                fetch('./hadiths.json', { cache: 'no-store' }),
+                fetch('./quran-verses.json', { cache: 'no-store' })
+            ]);
+
+            if (!hadithResponse.ok) throw new Error('Hadith file could not be loaded');
+            if (!verseResponse.ok) throw new Error('Quran verse file could not be loaded');
+
+            const hadithData = await hadithResponse.json();
+            const verseData = await verseResponse.json();
+
+            const hadiths = Array.isArray(hadithData) ? hadithData : (hadithData.hadiths || []);
+            const verses = Array.isArray(verseData) ? verseData : (verseData.verses || []);
+
+            inspirations = [
+                ...hadiths.map(item => ({ type: 'hadith', data: item })),
+                ...verses.map(item => ({ type: 'quran', data: item }))
+            ];
+        } catch (error) {
+            inspirations = [];
+            console.warn(error);
+        }
+    }
+
+    function getRandomInspiration() {
+        if (!inspirations.length) return null;
+
+        if (inspirations.length === 1) return inspirations[0];
+
+        let index;
+        do {
+            index = Math.floor(Math.random() * inspirations.length);
+        } while (index === lastInspirationIndex);
+
+        lastInspirationIndex = index;
+        return inspirations[index];
+    }
+
+    function openHadithModal() {
+        const inspiration = getRandomInspiration();
+
+        if (!inspiration) {
+            hadithEyebrow.textContent = 'Daily Inspiration';
+            hadithTitle.textContent = 'তথ্য প্রস্তুত হচ্ছে';
+            hadithText.textContent = 'কুরআন ও হাদীসের সংগ্রহ প্রস্তুত করা হচ্ছে।';
+            hadithReference.textContent = '';
+        } else if (inspiration.type === 'quran') {
+            const verse = inspiration.data;
+            hadithEyebrow.textContent = verse.topic || 'কুরআনের আয়াত';
+            hadithTitle.textContent = `${verse.surah || 'কুরআনের আয়াত'}${verse.ayahNumber ? ` — ${verse.ayahNumber}` : ''}`;
+            hadithText.textContent = verse.bangla || '';
+            hadithReference.textContent = verse.reference || 'Reference unavailable';
+        } else {
+            const hadith = inspiration.data;
+            hadithEyebrow.textContent = 'Daily Hadith';
+            hadithTitle.textContent = 'হাদীস শরীফ';
+            hadithText.textContent = hadith.text || hadith.hadith || hadith.arabic || '';
+            hadithReference.textContent = hadith.reference || hadith.source || 'Reference unavailable';
+        }
+
+        hadithModal.classList.add('is-open');
+        hadithModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('hadith-open');
+        hadithClose.focus();
+    }
+
+    function closeHadithModal() {
+        hadithModal.classList.remove('is-open');
+        hadithModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('hadith-open');
+        hadithFab.focus();
+    }
+
+    hadithFab.addEventListener('click', openHadithModal);
+    hadithClose.addEventListener('click', closeHadithModal);
+    hadithModal.addEventListener('click', (event) => {
+        if (event.target === hadithModal) closeHadithModal();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && hadithModal.classList.contains('is-open')) {
+            closeHadithModal();
+        }
+    });
+
+    loadInspirations();
+
     toggleLinemenBtn.addEventListener('click', () => {
         const isCollapsed = employeeProfilesContent.classList.toggle('collapsed');
         toggleLinemenBtn.textContent = isCollapsed ? 'Show All Linemen' : 'Hide All Linemen';
