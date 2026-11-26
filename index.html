@@ -135,33 +135,40 @@
   Your browser does not support the audio element.
 </audio>
 <script>
-  const audio = document.getElementById("intro-audio");
+  const introAudio = document.getElementById("intro-audio");
+  const introAudioDateKey = "intro-audio-played-date";
 
-  const removeInteractionListeners = () => {
-    document.removeEventListener("pointerdown", playIntroOnce);
-    document.removeEventListener("keydown", playIntroOnce);
+  const getLocalDateKey = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
-  const playIntroOnce = () => {
-    const playPromise = audio.play();
+  const playIntroOnLoadOncePerDay = () => {
+    const today = getLocalDateKey();
 
+    if (localStorage.getItem(introAudioDateKey) === today) {
+      return;
+    }
+
+    introAudio.currentTime = 0;
+
+    const playPromise = introAudio.play();
     if (playPromise !== undefined) {
       playPromise
-        .then(() => removeInteractionListeners())
+        .then(() => {
+          localStorage.setItem(introAudioDateKey, today);
+        })
         .catch(() => {
-          // Browsers may block autoplay until the user interacts with the page.
+          // Browser autoplay restrictions are respected. No touch or scroll handler
+          // is used, so audio cannot start from a user interaction.
         });
     }
   };
 
-  window.addEventListener("DOMContentLoaded", () => {
-    audio.currentTime = 0;
-    playIntroOnce();
-
-    // Retry once on the user's first interaction if autoplay is blocked.
-    document.addEventListener("pointerdown", playIntroOnce);
-    document.addEventListener("keydown", playIntroOnce);
-  });
+  window.addEventListener("DOMContentLoaded", playIntroOnLoadOncePerDay, { once: true });
 </script>
 
     <script src="script.js"></script>
